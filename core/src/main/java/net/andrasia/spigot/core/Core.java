@@ -2,6 +2,9 @@ package net.andrasia.spigot.core;
 
 import co.aikar.commands.PaperCommandManager;
 import net.andrasia.spigot.core.blockdata.MaterialBlockDataIndexerRegistry;
+import net.andrasia.spigot.core.blockdata.MultipleFacingBlockDataIndexer;
+import net.andrasia.spigot.core.blockdata.NoteBlockDataIndexer;
+import net.andrasia.spigot.core.blockdata.TripwireBlockDataIndexer;
 import net.andrasia.spigot.core.custom.block.CustomBlockListener;
 import net.andrasia.spigot.core.custom.block.CustomBlockRegistry;
 import net.andrasia.spigot.core.custom.item.CustomItemCommands;
@@ -39,6 +42,10 @@ public class Core extends CorePlugin
 
         this.customItemListener = new CustomItemListener(this, this.getCustomItemRegistry());
         this.customBlockListener = new CustomBlockListener(this, this.getCustomBlockRegistry());
+
+        this.blockDataIndexerRegistry.register(new MultipleFacingBlockDataIndexer());
+        this.blockDataIndexerRegistry.register(new TripwireBlockDataIndexer());
+        this.blockDataIndexerRegistry.register(new NoteBlockDataIndexer());
     }
 
     public static Core getInstance()

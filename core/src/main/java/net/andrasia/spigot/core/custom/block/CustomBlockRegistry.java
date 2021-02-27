@@ -6,6 +6,7 @@ import net.andrasia.spigot.core.blockdata.IBlockDataIndexer;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -52,5 +53,16 @@ public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
             return null;
         }
         return this.getCustomBlock(block.getType(), indexer.getIndex(block.getBlockData()));
+    }
+
+    @Nullable
+    public CustomBlock getCustomBlock(@Nonnull BlockData blockData)
+    {
+        IBlockDataIndexer indexer = Core.getInstance().getBlockDataIndexerRegistry().getIndexer(blockData.getMaterial());
+        if (indexer == null)
+        {
+            return null;
+        }
+        return this.getCustomBlock(blockData.getMaterial(), indexer.getIndex(blockData));
     }
 }

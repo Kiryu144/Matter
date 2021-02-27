@@ -1,41 +1,36 @@
 package net.andrasia.spigot.core.custom.block;
 
-import net.andrasia.spigot.core.registry.IRegistry;
-import net.andrasia.spigot.core.registry.IRegistryValue;
 import net.andrasia.spigot.core.Core;
 import net.andrasia.spigot.core.blockdata.IBlockDataIndexer;
-import org.apache.commons.lang.NotImplementedException;
+import net.andrasia.spigot.core.custom.item.CustomItem;
+import net.andrasia.spigot.core.registry.IRegistry;
+import net.andrasia.spigot.core.registry.IRegistryValue;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CustomBlock implements IRegistryValue<CustomBlock>
 {
     private final String registryName;
-    private final ConfigurationSection configurationSection;
-    private final Material material;
-    private final int materialIndex;
-    private final List<ItemStack> drops = new ArrayList<>();
+    private Material material;
+    private int materialIndex;
     private int registryIndex;
+    private CustomItem item = null;
 
-    public CustomBlock(@Nonnull String registryName, @Nonnull ConfigurationSection config) throws CustomBlockParseException
+    public CustomBlock(@Nonnull String registryName, @Nonnull ConfigurationSection configurationSection) throws CustomBlockParseException
     {
         this.registryName = registryName;
-        this.configurationSection = config;
 
         try
         {
-            this.material =  Material.valueOf(this.configurationSection.getString("material", "null").toUpperCase());
+            this.material =  Material.valueOf(configurationSection.getString("material", "null").toUpperCase());
             Validate.notNull(this.material);
-            this.materialIndex = this.configurationSection.getInt("material_index");
+            this.materialIndex = configurationSection.getInt("material_index");
         }
         catch (Exception exception)
         {
@@ -43,73 +38,9 @@ public class CustomBlock implements IRegistryValue<CustomBlock>
         }
     }
 
-    /**
-     * Should only be used by for debugging.
-     */
-    public CustomBlock(String registryName, Material material, int materialIndex)
+    public CustomBlock(@Nonnull String registryName)
     {
         this.registryName = registryName;
-        this.material = material;
-        this.materialIndex = materialIndex;
-        this.configurationSection = null;
-    }
-
-    /**
-     * This method is called sometimes after it has been registiered to its registry. This is so that any
-     * cross-references like custom items had a chance to register.
-     */
-    public void initializeLater() throws CustomBlockParseException
-    {
-        if (this.configurationSection == null)
-        {
-            return;
-        }
-
-        try
-        {
-            for(String dropName : this.configurationSection.getStringList("drops"))
-            {
-                ItemStack drop = this.parseDrop(dropName);
-                if (drop != null)
-                {
-                    this.drops.add(drop);
-                }
-            }
-        }
-        catch (Exception exception)
-        {
-            throw new CustomBlockParseException(exception);
-        }
-    }
-
-    @Nullable
-    private ItemStack parseDrop(@Nonnull String drop)
-    {
-        if (drop.startsWith("xitem"))
-        {
-            throw new NotImplementedException();
-            /*
-            String customItemName = drop.substring("xitem:".length());
-            CustomItem customItem = Core.getInstance().getCustomItemRegistry().get(customItemName);
-            if (customItem != null)
-            {
-                return customItem.createItemStack();
-            }
-            return null;*/
-        }
-
-        if (drop.startsWith("minecraft:"))
-        {
-            drop = drop.substring("minecraft:".length());
-        }
-
-        Material material = Material.valueOf(drop.toUpperCase());
-        return new ItemStack(material);
-    }
-
-    public List<ItemStack> getDrops()
-    {
-        return this.drops;
     }
 
     public void place(@Nonnull Location location)
@@ -122,6 +53,29 @@ public class CustomBlock implements IRegistryValue<CustomBlock>
         BlockData blockData = blockDataIndexer.fromIndex(this.materialIndex);
         location.getBlock().setType(this.material, false);
         location.getBlock().setBlockData(blockData, false);
+    }
+
+    public CustomBlock setMaterial(@Nonnull Material material, int materialIndex)
+    {
+        this.material = material;
+        this.materialIndex = materialIndex;
+        return this;
+    }
+
+    public CustomBlock setItem(CustomItem item)
+    {
+        this.item = item;
+        return this;
+    }
+
+    public CustomItem getItem()
+    {
+        return this.item;
+    }
+
+    public int getMaterialIndex()
+    {
+        return this.materialIndex;
     }
 
     @Nonnull

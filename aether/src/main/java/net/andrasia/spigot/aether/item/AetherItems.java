@@ -2,6 +2,7 @@ package net.andrasia.spigot.aether.item;
 
 import net.andrasia.spigot.core.custom.item.CustomItem;
 import net.andrasia.spigot.core.custom.item.CustomItemRegistry;
+import net.andrasia.spigot.core.custom.item.types.CustomItemPickaxe;
 import net.andrasia.spigot.core.custom.item.types.CustomItemTool;
 import org.bukkit.Material;
 
@@ -38,7 +39,6 @@ public class AetherItems
     public static CustomItem VALKYRIE_PICKAXE;
     public static CustomItem VALKYRIE_AXE;
     public static CustomItem VALKYRIE_SHOVEL;
-    public static CustomItem VALKYRIE_SWORD;
 
     public static CustomItem ZANITE_HELMET;
     public static CustomItem ZANITE_CHESTPLATE;
@@ -157,14 +157,38 @@ public class AetherItems
 
     public static void Register(@Nonnull CustomItemRegistry customItemRegistry)
     {
-        ZANITE_GEMSTONE = new CustomItem("zanite_gemstone").setMaterial(Material.PAPER).setCustomModelData(null);
-        AMBROSIUM_SHARD = new CustomItem("ambrosium_shard").setMaterial(Material.PAPER).setCustomModelData(null);
+        //noinspection UnnecessaryLocalVariable
+        CustomItemRegistry r = customItemRegistry;
 
-        HOLYSTONE_PICKAXE = new CustomItemTool("holystone_pickaxe").setDurability(8).setMaterial(Material.STONE_PICKAXE).setCustomModelData(null);
+        SKYROOT_PICKAXE     = register(r, new CustomItemPickaxe("skyroot_pickaxe").setDurability(60).setMaterial(Material.WOODEN_PICKAXE).setCustomModelData(1));
+        SKYROOT_AXE         = register(r, new CustomItemPickaxe("skyroot_axe").setDurability(60).setMaterial(Material.WOODEN_AXE).setCustomModelData(1));
+        SKYROOT_SHOVEL      = register(r, new CustomItemPickaxe("skyroot_shovel").setDurability(60).setMaterial(Material.WOODEN_SHOVEL).setCustomModelData(1));
+        SKYROOT_SWORD       = register(r, new CustomItemPickaxe("skyroot_sword").setDurability(60).setMaterial(Material.WOODEN_SWORD).setCustomModelData(1));
 
-        customItemRegistry.register(ZANITE_GEMSTONE);
-        customItemRegistry.register(AMBROSIUM_SHARD);
-        customItemRegistry.register(HOLYSTONE_PICKAXE);
+        HOLYSTONE_PICKAXE   = register(r, new CustomItemPickaxe("holystone_pickaxe").setDurability(132).setMaterial(Material.STONE_PICKAXE).setCustomModelData(1));
+        HOLYSTONE_AXE       = register(r, new CustomItemPickaxe("holystone_axe").setDurability(132).setMaterial(Material.STONE_AXE).setCustomModelData(1));
+        HOLYSTONE_SHOVEL    = register(r, new CustomItemPickaxe("holystone_shovel").setDurability(132).setMaterial(Material.STONE_SHOVEL).setCustomModelData(1));
+        HOLYSTONE_SWORD     = register(r, new CustomItemPickaxe("holystone_sword").setDurability(132).setMaterial(Material.STONE_SWORD).setCustomModelData(1));
+
+        ZANITE_PICKAXE      = register(r, new CustomItemPickaxe("zanite_pickaxe").setDurability(251).setMaterial(Material.IRON_PICKAXE).setCustomModelData(1));
+        ZANITE_AXE          = register(r, new CustomItemPickaxe("zanite_axe").setDurability(251).setMaterial(Material.IRON_AXE).setCustomModelData(1));
+        ZANITE_SHOVEL       = register(r, new CustomItemPickaxe("zanite_shovel").setDurability(251).setMaterial(Material.IRON_SHOVEL).setCustomModelData(1));
+        ZANITE_SWORD        = register(r, new CustomItemPickaxe("zanite_sword").setDurability(251).setMaterial(Material.IRON_SWORD).setCustomModelData(1));
+
+        GRAVITITE_PICKAXE   = register(r, new CustomItemPickaxe("gravitite_pickaxe").setDurability(1562).setMaterial(Material.DIAMOND_PICKAXE).setCustomModelData(1));
+        GRAVITITE_AXE       = register(r, new CustomItemPickaxe("gravitite_axe").setDurability(1562).setMaterial(Material.DIAMOND_AXE).setCustomModelData(1));
+        GRAVITITE_SHOVEL    = register(r, new CustomItemPickaxe("gravitite_shovel").setDurability(1562).setMaterial(Material.DIAMOND_SHOVEL).setCustomModelData(1));
+        GRAVITITE_SWORD     = register(r, new CustomItemPickaxe("gravitite_sword").setDurability(1562).setMaterial(Material.DIAMOND_SWORD).setCustomModelData(1));
+
+        VALKYRIE_PICKAXE    = register(r, new CustomItemPickaxe("valkyrie_pickaxe").setDurability(1001).setMaterial(Material.DIAMOND_PICKAXE).setCustomModelData(2));
+        VALKYRIE_AXE        = register(r, new CustomItemPickaxe("valkyrie_axe").setDurability(1001).setMaterial(Material.DIAMOND_AXE).setCustomModelData(2));
+        VALKYRIE_SHOVEL     = register(r, new CustomItemPickaxe("valkyrie_shovel").setDurability(1001).setMaterial(Material.DIAMOND_SHOVEL).setCustomModelData(2));
+    }
+
+    private static CustomItem register(@Nonnull CustomItemRegistry customItemRegistry, @Nonnull CustomItem customItem)
+    {
+        customItemRegistry.register(customItem);
+        return customItem;
     }
 }
 

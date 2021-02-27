@@ -1,17 +1,19 @@
-package net.andrasia.spigot.core.custom.block;
+package net.andrasia.spigot.core.custom.item.types;
 
+import net.andrasia.spigot.core.custom.block.CustomBlock;
 import net.andrasia.spigot.core.custom.item.CustomItem;
 import net.andrasia.spigot.core.custom.item.CustomItemBlockInteraction;
 import net.andrasia.spigot.core.custom.item.CustomItemParseException;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
 public class CustomItemBlock extends CustomItem
 {
-    private final CustomBlock customBlock;
+    private CustomBlock customBlock;
 
     public CustomItemBlock(@Nonnull String registryName, @Nonnull ConfigurationSection data) throws CustomItemParseException
     {
@@ -29,6 +31,16 @@ public class CustomItemBlock extends CustomItem
         {
             throw new CustomItemParseException(exception);
         }
+    }
+
+    public CustomItemBlock(@NotNull String registryName)
+    {
+        super(registryName);
+    }
+
+    public void setCustomBlock(@Nonnull CustomBlock customBlock)
+    {
+        this.customBlock = customBlock;
     }
 
     @Override

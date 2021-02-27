@@ -41,13 +41,6 @@ public class CustomBlockListener implements Listener
             event.setDropItems(false);
             event.setExpToDrop(0);
             Location dropLocation = event.getBlock().getLocation().add(0.5, 0.5, 0.5);
-            for (ItemStack drop : customBlock.getDrops())
-            {
-                if (drop != null && !drop.getType().isAir())
-                {
-                    dropLocation.getWorld().dropItem(dropLocation, drop);
-                }
-            }
         }
     }
 
