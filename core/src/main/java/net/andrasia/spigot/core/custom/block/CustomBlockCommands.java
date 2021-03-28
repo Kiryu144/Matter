@@ -8,12 +8,17 @@ import co.aikar.commands.annotation.Subcommand;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-@CommandAlias("xblock")
+@CommandAlias("core")
 public class CustomBlockCommands extends BaseCommand
 {
-    private final CustomBlockRegistry customBlockRegistry;
+    private CustomBlockRegistry customBlockRegistry;
 
     public CustomBlockCommands(CustomBlockRegistry customBlockRegistry)
+    {
+        this.customBlockRegistry = customBlockRegistry;
+    }
+
+    public void setCustomBlockRegistry(CustomBlockRegistry customBlockRegistry)
     {
         this.customBlockRegistry = customBlockRegistry;
     }

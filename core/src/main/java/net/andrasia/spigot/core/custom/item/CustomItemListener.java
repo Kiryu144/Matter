@@ -22,12 +22,17 @@ import javax.annotation.Nonnull;
 
 public class CustomItemListener implements Listener
 {
-    private final CustomItemRegistry customItemRegistry;
+    private CustomItemRegistry customItemRegistry;
 
     public CustomItemListener(@Nonnull Plugin plugin, @Nonnull CustomItemRegistry customItemRegistry)
     {
         this.customItemRegistry = customItemRegistry;
         Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    public void setCustomItemRegistry(CustomItemRegistry customItemRegistry)
+    {
+        this.customItemRegistry = customItemRegistry;
     }
 
     @EventHandler

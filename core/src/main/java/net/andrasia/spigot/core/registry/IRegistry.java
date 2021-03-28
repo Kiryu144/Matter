@@ -55,4 +55,9 @@ public interface IRegistry<V extends IRegistryValue<V>>
      * @return Returns a random value created in the constructor. Is used for identification.
      */
     short getInstanceID();
+
+    /**
+     * Resets the registry to its initial state.
+     */
+    void clear();
 }

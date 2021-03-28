@@ -14,12 +14,17 @@ import javax.annotation.Nonnull;
 
 public class CustomBlockListener implements Listener
 {
-    private final CustomBlockRegistry customBlockRegistry;
+    private CustomBlockRegistry customBlockRegistry;
 
     public CustomBlockListener(@Nonnull Plugin plugin, @Nonnull CustomBlockRegistry customBlockRegistry)
     {
         this.customBlockRegistry = customBlockRegistry;
         Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    public void setCustomBlockRegistry(CustomBlockRegistry customBlockRegistry)
+    {
+        this.customBlockRegistry = customBlockRegistry;
     }
 
     @EventHandler

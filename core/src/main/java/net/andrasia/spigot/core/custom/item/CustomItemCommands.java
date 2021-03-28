@@ -14,9 +14,14 @@ import org.bukkit.inventory.ItemStack;
 @CommandAlias("core")
 public class CustomItemCommands extends BaseCommand
 {
-    private final CustomItemRegistry customItemRegistry;
+    private CustomItemRegistry customItemRegistry;
 
     public CustomItemCommands(CustomItemRegistry customItemRegistry)
+    {
+        this.customItemRegistry = customItemRegistry;
+    }
+
+    public void setCustomItemRegistry(CustomItemRegistry customItemRegistry)
     {
         this.customItemRegistry = customItemRegistry;
     }

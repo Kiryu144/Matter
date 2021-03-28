@@ -10,6 +10,7 @@ import org.bukkit.block.data.BlockData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 /**
  * This registry extension provides an easy way to find the CustomBlock for a Block.
@@ -64,5 +65,12 @@ public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
             return null;
         }
         return this.getCustomBlock(blockData.getMaterial(), indexer.getIndex(blockData));
+    }
+
+    @Override
+    public void clear()
+    {
+        super.clear();
+        Arrays.fill(this.blockReferences, null);
     }
 }

@@ -10,7 +10,7 @@ public class CommonRegistry<V extends IRegistryValue<V>> implements IRegistry<V>
     private final List<V> valueList = new ArrayList<>();
     private final List<String> nameList = new ArrayList<>();
 
-    private final short instanceID;
+    private short instanceID;
 
     public CommonRegistry()
     {
@@ -68,5 +68,14 @@ public class CommonRegistry<V extends IRegistryValue<V>> implements IRegistry<V>
     public short getInstanceID()
     {
         return this.instanceID;
+    }
+
+    @Override
+    public void clear()
+    {
+        this.names.clear();
+        this.valueList.clear();
+        this.nameList.clear();
+        this.instanceID = (short) new Random().nextInt(Short.MAX_VALUE);
     }
 }
