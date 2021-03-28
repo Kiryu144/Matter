@@ -75,7 +75,11 @@ public class CustomItemRegistry extends CommonRegistry<CustomItem>
 
         for (ItemStack itemStack : inventory.getContents())
         {
-            this.fixCustomItem(itemStack);
+            try
+            {
+                this.fixCustomItem(itemStack);
+            }
+            catch (Exception ignored) { }
         }
     }
 

@@ -110,7 +110,7 @@ public class Core extends CorePlugin
         try
         {
             CustomBlockRegistry customBlockRegistry = new CustomBlockRegistry();
-            CustomBlockParser customBlockParser = new CustomBlockParser(customBlockRegistry);
+            CustomBlockParser customBlockParser = new CustomBlockParser(customBlockRegistry, this.customItemRegistry);
 
             JsonConfiguration jsonConfiguration = new JsonConfiguration();
             jsonConfiguration.load(Paths.get(this.getDataFolder().toString(), "blocks.json").toFile());

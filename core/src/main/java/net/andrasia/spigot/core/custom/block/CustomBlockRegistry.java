@@ -1,5 +1,8 @@
 package net.andrasia.spigot.core.custom.block;
 
+import net.andrasia.spigot.core.custom.block.representation.IBlockRepresentation;
+import net.andrasia.spigot.core.custom.block.representation.RotatableBlockRepresentation;
+import net.andrasia.spigot.core.custom.block.representation.SolidBlockRepresentation;
 import net.andrasia.spigot.core.registry.CommonRegistry;
 import net.andrasia.spigot.core.Core;
 import net.andrasia.spigot.core.blockdata.IBlockDataIndexer;
@@ -23,19 +26,37 @@ public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
     public void register(@Nonnull CustomBlock value)
     {
         super.register(value);
-        int matOrdinal = value.getMaterial().ordinal();
-        CustomBlock[] perBlockData = this.blockReferences[matOrdinal];
+        IBlockRepresentation blockRepresentation = value.getBlockRepresentation();
+        this.register(blockRepresentation, value);
+    }
+
+    private void register(@Nonnull IBlockRepresentation blockRepresentation, @Nonnull CustomBlock customBlock)
+    {
+        if (blockRepresentation instanceof SolidBlockRepresentation)
+        {
+            SolidBlockRepresentation solidBlockRepresentation = (SolidBlockRepresentation) blockRepresentation;
+            this.register(solidBlockRepresentation.getMaterial(), solidBlockRepresentation.getBlockDataIndexer(),
+                    solidBlockRepresentation.getVariant(), customBlock);
+        }
+        else if (blockRepresentation instanceof RotatableBlockRepresentation)
+        {
+            RotatableBlockRepresentation rotatableBlockRepresentation = (RotatableBlockRepresentation) blockRepresentation;
+            for (IBlockRepresentation iBlockRepresentation : rotatableBlockRepresentation.getBlockRepresentations())
+            {
+                this.register(iBlockRepresentation, customBlock);
+            }
+        }
+    }
+
+    private void register(@Nonnull Material material, @Nonnull IBlockDataIndexer blockDataIndexer, int variant, @Nonnull CustomBlock customBlock)
+    {
+        CustomBlock[] perBlockData = this.blockReferences[material.ordinal()];
         if (perBlockData == null)
         {
-            Validate.notNull(value.getBlockDataIndexer(), "BlockDataIndexer is not found for material " + value.getMaterial().toString());
-            perBlockData = new CustomBlock[value.getBlockDataIndexer().max()];
-            this.blockReferences[matOrdinal] = perBlockData;
+            perBlockData = new CustomBlock[blockDataIndexer.max()];
+            this.blockReferences[material.ordinal()] = perBlockData;
         }
-
-        for (int index : value.getMaterialIndicies())
-        {
-            perBlockData[index] = value;
-        }
+        perBlockData[variant] = customBlock;
     }
 
     @Nullable

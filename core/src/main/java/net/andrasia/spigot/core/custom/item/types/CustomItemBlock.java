@@ -4,8 +4,6 @@ import net.andrasia.spigot.core.custom.block.CustomBlock;
 import net.andrasia.spigot.core.custom.item.CustomItem;
 import net.andrasia.spigot.core.custom.item.CustomItemBlockInteraction;
 import net.andrasia.spigot.core.custom.item.CustomItemParseException;
-import org.apache.commons.lang.NotImplementedException;
-import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,19 +16,6 @@ public class CustomItemBlock extends CustomItem
     public CustomItemBlock(@Nonnull String registryName, @Nonnull ConfigurationSection data) throws CustomItemParseException
     {
         super(registryName, data);
-        
-        try
-        {
-            String customBlockName = data.getString("custom_block");
-            Validate.notNull(customBlockName, "Missing key 'custom_block'");
-            throw new NotImplementedException();
-            //this.customBlock = Core.getInstance().getCustomBlockRegistry().get(customBlockName);
-            //Validate.notNull(this.customBlock, String.format("Unknown custom block '%s'", customBlockName));
-        }
-        catch (Exception exception)
-        {
-            throw new CustomItemParseException(exception);
-        }
     }
 
     public CustomItemBlock(@NotNull String registryName)
@@ -38,9 +23,9 @@ public class CustomItemBlock extends CustomItem
         super(registryName);
     }
 
-    public void setCustomBlock(@Nonnull CustomBlock customBlock)
+    public void setCustomBlock(@Nonnull CustomBlock customBLock)
     {
-        this.customBlock = customBlock;
+        this.customBlock = customBLock;
     }
 
     @Override
@@ -48,7 +33,7 @@ public class CustomItemBlock extends CustomItem
     {
         if (interaction.getInteractionType().equals(CustomItemBlockInteraction.InteractionType.PLACE))
         {
-            this.customBlock.place(interaction.getBlock().getLocation());
+            this.customBlock.place(interaction.getBlock().getLocation(), interaction.getBlockFace());
         }
     }
 }

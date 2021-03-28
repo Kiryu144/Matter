@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nonnull;
@@ -40,8 +39,8 @@ public class CustomBlockListener implements Listener
             return;
         }
 
-        CustomBlock customBlock = this.customBlockRegistry.getCustomBlock(event.getBlock());
-        if (customBlock != null)
+        CustomBlock customBLock = this.customBlockRegistry.getCustomBlock(event.getBlock());
+        if (customBLock != null)
         {
             event.setDropItems(false);
             event.setExpToDrop(0);
@@ -57,8 +56,8 @@ public class CustomBlockListener implements Listener
             return;
         }
 
-        CustomBlock customBlock = this.customBlockRegistry.getCustomBlock(event.getBlock());
-        if (customBlock != null)
+        CustomBlock customBLock = this.customBlockRegistry.getCustomBlock(event.getBlock());
+        if (customBLock != null)
         {
             event.setCancelled(true);
         }

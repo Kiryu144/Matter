@@ -28,12 +28,12 @@ public class CustomBlockCommands extends BaseCommand
     @CommandCompletion("@custom_blocks")
     public void setBlock(Player player, String name, int x, int y, int z)
     {
-        CustomBlock customBlock = customBlockRegistry.get(name);
+        CustomBlock customBlock = this.customBlockRegistry.get(name);
         if (customBlock == null)
         {
             player.sendMessage(String.format("§cUnknown custom block §b%s", name));
             return;
         }
-        customBlock.place(new Location(player.getWorld(), x, y, z));
+        customBlock.place(new Location(player.getWorld(), x, y, z), null);
     }
 }

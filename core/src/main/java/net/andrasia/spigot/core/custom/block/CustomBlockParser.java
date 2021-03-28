@@ -1,6 +1,10 @@
 package net.andrasia.spigot.core.custom.block;
 
 import net.andrasia.spigot.core.Core;
+import net.andrasia.spigot.core.custom.block.representation.IBlockRepresentation;
+import net.andrasia.spigot.core.custom.item.CustomItem;
+import net.andrasia.spigot.core.custom.item.CustomItemRegistry;
+import net.andrasia.spigot.core.custom.item.types.CustomItemBlock;
 import org.bukkit.configuration.ConfigurationSection;
 
 import javax.annotation.Nonnull;
@@ -11,10 +15,12 @@ import java.util.List;
 public class CustomBlockParser
 {
     private final CustomBlockRegistry customBlockRegistry;
+    private final CustomItemRegistry customItemRegistry;
 
-    public CustomBlockParser(CustomBlockRegistry customBlockRegistry)
+    public CustomBlockParser(@Nonnull CustomBlockRegistry customBlockRegistry, @Nonnull CustomItemRegistry customItemRegistry)
     {
         this.customBlockRegistry = customBlockRegistry;
+        this.customItemRegistry = customItemRegistry;
     }
 
     /**
@@ -55,14 +61,22 @@ public class CustomBlockParser
     {
         try
         {
-            CustomBlock customItem = new CustomBlock(name, configurationSection);
-            this.customBlockRegistry.register(customItem);
-            return true;
+            CustomItemBlock customItem = new CustomItemBlock(name, configurationSection.getConfigurationSection("item"));
+
+            IBlockRepresentation blockRepresentation = IBlockRepresentation.FromConfig(configurationSection);
+            CustomBlock customBlock = new CustomBlock(name, blockRepresentation, customItem);
+            this.customBlockRegistry.register(customBlock);
+
+            this.customItemRegistry.register(customItem);
+
+            customItem.setCustomBlock(customBlock);
         }
-        catch (CustomBlockParseException exception)
+        catch (Exception exception)
         {
             Core.getInstance().getLogger().warning(String.format("Unable to parse custom item '%s' from config: %s", name, exception.getMessage()));
+            exception.printStackTrace();
             return false;
         }
+        return true;
     }
 }
