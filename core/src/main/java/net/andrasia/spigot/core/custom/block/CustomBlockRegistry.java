@@ -10,6 +10,10 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,6 +25,7 @@ import java.util.Arrays;
 public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
 {
     private final CustomBlock[][] blockReferences = new CustomBlock[Material.values().length][];
+    private Entity lastCorrelatingEntity = null; // TODO: This is very hacky, please find a better way soon.
 
     @Override
     public void register(@Nonnull CustomBlock value)
@@ -69,6 +74,32 @@ public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
     @Nullable
     public CustomBlock getCustomBlock(@Nonnull Block block)
     {
+        if (block.getType().equals(Material.BARRIER))
+        {
+            for (Entity entity : block.getChunk().getEntities())
+            {
+                if (!entity.getType().equals(EntityType.ITEM_FRAME))
+                {
+                    continue;
+                }
+
+                ItemFrame itemFrame = (ItemFrame) entity;
+                if (itemFrame.getCustomName() == null)
+                {
+                    continue;
+                }
+
+                Vector itemFrameLoc = itemFrame.getLocation().toVector();
+                if (itemFrameLoc.getBlockX() != block.getX() || itemFrameLoc.getBlockZ() != block.getZ() || itemFrameLoc.getBlockY() != block.getY())
+                {
+                    continue;
+                }
+
+                this.lastCorrelatingEntity = itemFrame;
+                return this.get(itemFrame.getCustomName());
+            }
+        }
+
         IBlockDataIndexer indexer = Core.getInstance().getBlockDataIndexerRegistry().getIndexer(block.getType());
         if (indexer == null)
         {
@@ -88,10 +119,16 @@ public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
         return this.getCustomBlock(blockData.getMaterial(), indexer.getIndex(blockData));
     }
 
+    public Entity getLastCorrelatingEntity()
+    {
+        return this.lastCorrelatingEntity;
+    }
+
     @Override
     public void clear()
     {
         super.clear();
         Arrays.fill(this.blockReferences, null);
+        this.lastCorrelatingEntity = null;
     }
 }

@@ -27,7 +27,7 @@ public class CustomBlock implements IRegistryValue<CustomBlock>
 
     public void place(@Nonnull Location location, @Nullable BlockFace blockFace)
     {
-        this.blockRepresentation.place(location, blockFace);
+        this.blockRepresentation.place(this, location, blockFace);
     }
 
     public IBlockRepresentation getBlockRepresentation()

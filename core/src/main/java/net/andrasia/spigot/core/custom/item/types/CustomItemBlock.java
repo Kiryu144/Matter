@@ -4,6 +4,7 @@ import net.andrasia.spigot.core.custom.block.CustomBlock;
 import net.andrasia.spigot.core.custom.item.CustomItem;
 import net.andrasia.spigot.core.custom.item.CustomItemBlockInteraction;
 import net.andrasia.spigot.core.custom.item.CustomItemParseException;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,6 +34,7 @@ public class CustomItemBlock extends CustomItem
     {
         if (interaction.getInteractionType().equals(CustomItemBlockInteraction.InteractionType.PLACE))
         {
+            interaction.getBlock().setType(Material.AIR);
             this.customBlock.place(interaction.getBlock().getLocation(), interaction.getBlockFace());
         }
     }

@@ -1,5 +1,6 @@
 package net.andrasia.spigot.core.custom.block.representation;
 
+import net.andrasia.spigot.core.custom.block.CustomBlock;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -45,7 +46,7 @@ public class RotatableBlockRepresentation implements IBlockRepresentation
     }
 
     @Override
-    public void place(@NotNull Location location, @Nullable BlockFace blockFacePlacedOn)
+    public void place(@Nonnull CustomBlock customBlock, @NotNull Location location, @Nullable BlockFace blockFacePlacedOn)
     {
         int representationToUse = 0;
 
@@ -98,6 +99,6 @@ public class RotatableBlockRepresentation implements IBlockRepresentation
             }
         }
 
-        this.blockRepresentations.get(representationToUse < this.blockRepresentations.size() ? representationToUse : 0).place(location, blockFacePlacedOn);
+        this.blockRepresentations.get(representationToUse < this.blockRepresentations.size() ? representationToUse : 0).place(customBlock, location, blockFacePlacedOn);
     }
 }

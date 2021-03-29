@@ -2,6 +2,7 @@ package net.andrasia.spigot.core.custom.block.representation;
 
 import net.andrasia.spigot.core.Core;
 import net.andrasia.spigot.core.blockdata.IBlockDataIndexer;
+import net.andrasia.spigot.core.custom.block.CustomBlock;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,7 +43,7 @@ public class SolidBlockRepresentation implements IBlockRepresentation
     }
 
     @Override
-    public void place(@NotNull Location location, @Nullable BlockFace blockFacePlacedOn)
+    public void place(@Nonnull CustomBlock customBlock, @NotNull Location location, @Nullable BlockFace blockFacePlacedOn)
     {
         location.getBlock().setBlockData(this.blockData, false);
     }
