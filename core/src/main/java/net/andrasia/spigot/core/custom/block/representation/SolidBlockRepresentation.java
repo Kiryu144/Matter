@@ -9,10 +9,10 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class SolidBlockRepresentation implements IBlockRepresentation
 {
@@ -43,7 +43,7 @@ public class SolidBlockRepresentation implements IBlockRepresentation
     }
 
     @Override
-    public void place(@Nonnull CustomBlock customBlock, @NotNull Location location, @Nullable BlockFace blockFacePlacedOn)
+    public void place(@Nonnull CustomBlock customBlock, @Nonnull Location location, @javax.annotation.Nullable BlockFace blockFace, @Nullable Player player)
     {
         location.getBlock().setBlockData(this.blockData, false);
     }

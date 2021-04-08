@@ -10,13 +10,14 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ItemFrameBlockRepresentation implements IBlockRepresentation
 {
@@ -45,11 +46,11 @@ public class ItemFrameBlockRepresentation implements IBlockRepresentation
     }
 
     @Override
-    public void place(@Nonnull CustomBlock customBlock, @NotNull Location location, @Nullable BlockFace blockFacePlacedOn)
+    public void place(@Nonnull CustomBlock customBlock, @Nonnull Location location, @javax.annotation.Nullable BlockFace blockFace, @Nullable Player player)
     {
         location.getWorld().spawnEntity(location, EntityType.ITEM_FRAME, CreatureSpawnEvent.SpawnReason.DEFAULT, entity -> {
             ItemFrame itemFrame = (ItemFrame) entity;
-            itemFrame.setFacingDirection(blockFacePlacedOn != null ? blockFacePlacedOn : BlockFace.DOWN);
+            itemFrame.setFacingDirection(blockFace != null ? blockFace : BlockFace.DOWN);
             itemFrame.setItem(this.itemStack.clone(), false);
             itemFrame.setCustomName(customBlock.getRegistryName());
             itemFrame.setFixed(true);

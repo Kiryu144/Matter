@@ -34,6 +34,6 @@ public class CustomBlockCommands extends BaseCommand
             player.sendMessage(String.format("§cUnknown custom block §b%s", name));
             return;
         }
-        customBlock.place(new Location(player.getWorld(), x, y, z), null);
+        customBlock.place(new Location(player.getWorld(), x, y, z), null, null);
     }
 }

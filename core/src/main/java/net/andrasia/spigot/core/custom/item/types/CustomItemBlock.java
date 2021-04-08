@@ -35,7 +35,7 @@ public class CustomItemBlock extends CustomItem
         if (interaction.getInteractionType().equals(CustomItemBlockInteraction.InteractionType.PLACE))
         {
             interaction.getBlock().setType(Material.AIR);
-            this.customBlock.place(interaction.getBlock().getLocation(), interaction.getBlockFace());
+            this.customBlock.place(interaction.getBlock().getLocation(), interaction.getBlockFace(), interaction.getPlacer());
         }
     }
 }

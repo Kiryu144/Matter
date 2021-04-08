@@ -6,6 +6,7 @@ import net.andrasia.spigot.core.registry.IRegistry;
 import net.andrasia.spigot.core.registry.IRegistryValue;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,9 +26,9 @@ public class CustomBlock implements IRegistryValue<CustomBlock>
         this.customItem = customItem;
     }
 
-    public void place(@Nonnull Location location, @Nullable BlockFace blockFace)
+    public void place(@Nonnull Location location, @Nullable BlockFace blockFace, @Nullable Player player)
     {
-        this.blockRepresentation.place(this, location, blockFace);
+        this.blockRepresentation.place(this, location, blockFace, player);
     }
 
     public IBlockRepresentation getBlockRepresentation()

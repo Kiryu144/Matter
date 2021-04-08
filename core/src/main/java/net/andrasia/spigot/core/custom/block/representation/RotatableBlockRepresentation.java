@@ -5,15 +5,26 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RotatableBlockRepresentation implements IBlockRepresentation
 {
+    private static final int[][] ROTATION_LOOKUP =
+            {
+                    // North, East, South, West, Up, Down
+                    { 0, 0, 0, 0, 0, 0 }, // 0
+                    { 0, 0, 0, 0, 0, 0 }, // 1
+                    { 0, 1, 0, 1, 0, 0 }, // 2
+                    { 0, 1, 0, 1, 2, 2 }, // 3
+                    { 0, 1, 2, 3, 0, 0 }, // 4
+                    { 0, 0, 0, 0, 0, 0 }, // 5
+                    { 0, 1, 2, 3, 4, 5 }, // 6
+            };
     private final List<IBlockRepresentation> blockRepresentations = new ArrayList<>();
 
     public RotatableBlockRepresentation(@Nonnull List<IBlockRepresentation> blockRepresentations)
@@ -46,59 +57,18 @@ public class RotatableBlockRepresentation implements IBlockRepresentation
     }
 
     @Override
-    public void place(@Nonnull CustomBlock customBlock, @NotNull Location location, @Nullable BlockFace blockFacePlacedOn)
+    public void place(@Nonnull CustomBlock customBlock, @Nonnull Location location, @Nullable BlockFace blockFace, @Nullable Player player)
     {
-        int representationToUse = 0;
-
-        // TODO: There has to be a cleaner solution to this ..
-        if (blockFacePlacedOn != null)
+        if (player != null && this.blockRepresentations.size() <= 4)
         {
-            if (this.blockRepresentations.size() == 2)
-            {
-                switch (blockFacePlacedOn)
-                {
-                    case EAST:
-                    case WEST:
-                        representationToUse = 1;
-                        break;
-                }
-            }
-            else if(this.blockRepresentations.size() == 3)
-            {
-                switch (blockFacePlacedOn)
-                {
-                    case EAST:
-                    case WEST:
-                        representationToUse = 1;
-                        break;
-                    case UP:
-                    case DOWN:
-                        representationToUse = 2;
-                        break;
-                }
-            }
-            else if(this.blockRepresentations.size() == 4)
-            {
-                switch (blockFacePlacedOn)
-                {
-                    case EAST: representationToUse = 1; break;
-                    case SOUTH: representationToUse = 2; break;
-                    case WEST: representationToUse = 3; break;
-                }
-            }
-            else if(this.blockRepresentations.size() == 6)
-            {
-                switch (blockFacePlacedOn)
-                {
-                    case EAST: representationToUse = 1; break;
-                    case SOUTH: representationToUse = 2; break;
-                    case WEST: representationToUse = 3; break;
-                    case UP: representationToUse = 4; break;
-                    case DOWN: representationToUse = 5; break;
-                }
-            }
+            blockFace = player.getFacing();
+        }
+        else if (blockFace == null)
+        {
+            blockFace = BlockFace.NORTH;
         }
 
-        this.blockRepresentations.get(representationToUse < this.blockRepresentations.size() ? representationToUse : 0).place(customBlock, location, blockFacePlacedOn);
+        int representationToUse = ROTATION_LOOKUP[this.blockRepresentations.size()][blockFace.ordinal()];
+        this.blockRepresentations.get(representationToUse < this.blockRepresentations.size() ? representationToUse : 0).place(customBlock, location, blockFace, player);
     }
 }
