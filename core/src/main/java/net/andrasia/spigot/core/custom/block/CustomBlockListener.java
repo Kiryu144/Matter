@@ -8,6 +8,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +20,7 @@ import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nonnull;
@@ -115,7 +117,8 @@ public class CustomBlockListener implements Listener
             return;
         }
 
-        Block block = event.getWhoClicked().getTargetBlock(5);
+        HumanEntity player = event.getWhoClicked();
+        Block block = player.getTargetBlock(5);
         CustomBlock customBlock = this.customBlockRegistry.getCustomBlock(block);
         if (customBlock == null)
         {
@@ -125,15 +128,16 @@ public class CustomBlockListener implements Listener
         event.setCancelled(true);
         CustomItem customBlockItem = customBlock.getCustomItem();
 
-        int firstEmpty = -1;
+        PlayerInventory inventory = player.getInventory();
+        int slotToUse = -1;
         for (int i = 0; i < 9; ++i)
         {
-            ItemStack itemStack = event.getWhoClicked().getInventory().getItem(i);
+            ItemStack itemStack = inventory.getItem(i);
             if (itemStack == null || itemStack.getType().isAir())
             {
-                if (firstEmpty < 0)
+                if (slotToUse < 0)
                 {
-                    firstEmpty = i;
+                    slotToUse = i;
                 }
             }
             else
@@ -141,17 +145,23 @@ public class CustomBlockListener implements Listener
                 CustomItem customItem = this.customItemRegistry.get(itemStack, false);
                 if (customItem == customBlockItem)
                 {
-                    event.getWhoClicked().getInventory().setHeldItemSlot(i);
+                    inventory.setHeldItemSlot(i);
                     return;
                 }
             }
         }
 
-        if (firstEmpty == -1)
+        ItemStack currentlyHeld = inventory.getItem(inventory.getHeldItemSlot());
+        if (currentlyHeld == null || currentlyHeld.getType().isAir())
         {
-            firstEmpty = event.getWhoClicked().getInventory().getHeldItemSlot();
+            slotToUse = inventory.getHeldItemSlot();
+        }
+        else if (slotToUse == -1)
+        {
+            slotToUse = inventory.getHeldItemSlot();
         }
 
-        event.getWhoClicked().getInventory().setItem(firstEmpty, customBlockItem.createItemStack());
+        inventory.setItem(slotToUse, customBlockItem.createItemStack());
+        inventory.setHeldItemSlot(slotToUse);
     }
 }
