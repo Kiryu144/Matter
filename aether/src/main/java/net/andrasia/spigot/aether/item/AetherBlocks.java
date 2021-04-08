@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 
 public class AetherBlocks
 {
+    public static CustomBlock AETHER_GRASS_PLANT;
     public static CustomBlock AETHER_GRASS;
     public static CustomBlock ENCHANTED_AETHER_GRASS;
     public static CustomBlock AETHER_DIRT;
@@ -106,20 +107,23 @@ public class AetherBlocks
 
         QUICKSOIL = Register(r1, r2, new CustomBlock("quicksoil").setMaterial(Material.BROWN_MUSHROOM_BLOCK, 3),
                 (CustomItemBlock) new CustomItemBlock("quicksoil").setMaterial(Material.SAND).setCustomModelData(1));
+
+        AETHER_GRASS_PLANT = Register(r1, r2, new CustomBlock("aether_grass_plant").setMaterial(Material.TRIPWIRE, 1),
+                (CustomItemBlock) new CustomItemBlock("aether_grass_plant").setMaterial(Material.STONE).setCustomModelData(2));
     }
 
-    private static CustomBlock Register(@Nonnull CustomBlockRegistry customBlockRegistry, @Nullable CustomItemRegistry customItemRegistry, @Nonnull CustomBlock customBlock, @Nullable CustomItemBlock customItemBlock)
+    private static CustomBlock Register(@Nonnull CustomBlockRegistry customBlockRegistry, @Nullable CustomItemRegistry customItemRegistry, @Nonnull CustomBlock customBLock, @Nullable CustomItemBlock customItemBlock)
     {
-        customBlock.setItem(customItemBlock);
-        customBlockRegistry.register(customBlock);
+        customBLock.setItem(customItemBlock);
+        customBlockRegistry.register(customBLock);
 
         if (customItemBlock != null && customItemRegistry != null)
         {
-            customItemBlock.setCustomBlock(customBlock);
+            customItemBlock.setCustomBlock(customBLock);
             customItemRegistry.register(customItemBlock);
         }
 
-        return customBlock;
+        return customBLock;
     }
 }
 

@@ -57,7 +57,7 @@ public class Core extends CorePlugin
         this.commandManager.registerCommand(this.customBlockCommands);
 
         this.customItemListener = new CustomItemListener(this, this.getCustomItemRegistry());
-        this.customBlockListener = new CustomBlockListener(this, this.getCustomBlockRegistry());
+        this.customBlockListener = new CustomBlockListener(this);
 
         this.blockDataIndexerRegistry.register(new MultipleFacingBlockDataIndexer());
         this.blockDataIndexerRegistry.register(new TripwireBlockDataIndexer());
@@ -138,6 +138,7 @@ public class Core extends CorePlugin
         {
             this.customBlockCommands.setCustomBlockRegistry(this.customBlockRegistry);
             this.customBlockListener.setCustomBlockRegistry(this.customBlockRegistry);
+            this.customBlockListener.setCustomItemRegistry(this.customItemRegistry);
         }
 
         Bukkit.getOnlinePlayers().forEach(player -> this.customItemRegistry.fixInventory(player.getInventory()));

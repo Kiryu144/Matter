@@ -6,8 +6,12 @@ import net.andrasia.spigot.core.Core;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class AetherChunkGenerator extends ChunkGenerator
@@ -346,6 +350,12 @@ public class AetherChunkGenerator extends ChunkGenerator
         (new AetherGenQuicksoil()).generate(world, x, z, chunkData);
 
         return chunkData;
+    }
+
+    @Override
+    public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world)
+    {
+        return Collections.singletonList(new AetherTreePopulator());
     }
 
     @Override

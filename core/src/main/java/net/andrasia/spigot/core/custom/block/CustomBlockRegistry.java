@@ -72,8 +72,13 @@ public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
     }
 
     @Nullable
-    public CustomBlock getCustomBlock(@Nonnull Block block)
+    public CustomBlock getCustomBlock(@Nullable Block block)
     {
+        if (block == null)
+        {
+            return null;
+        }
+
         if (block.getType().equals(Material.BARRIER))
         {
             for (Entity entity : block.getChunk().getEntities())
