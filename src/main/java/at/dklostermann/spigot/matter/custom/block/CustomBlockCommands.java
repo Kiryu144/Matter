@@ -24,7 +24,7 @@ public class CustomBlockCommands extends BaseCommand
     }
 
     @Subcommand("setblock")
-    @CommandPermission("dc.setblock")
+    @CommandPermission("matter.setblock")
     @CommandCompletion("@custom_blocks")
     public void setBlock(Player player, String name, int x, int y, int z)
     {

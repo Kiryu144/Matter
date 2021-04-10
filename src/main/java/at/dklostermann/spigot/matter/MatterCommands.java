@@ -13,14 +13,14 @@ import org.bukkit.command.CommandSender;
 public class MatterCommands extends BaseCommand
 {
     @Subcommand("reload")
-    @CommandPermission("dc.reload")
+    @CommandPermission("matter.reload")
     public void reload(CommandSender sender)
     {
         Matter.getInstance().reload(sender);
     }
 
     @Subcommand("material_index")
-    @CommandPermission("xblock.index")
+    @CommandPermission("matter.material_index")
     @CommandCompletion("@blockdata_indexer_types")
     public void materialIndex(CommandSender sender, String name, int index)
     {

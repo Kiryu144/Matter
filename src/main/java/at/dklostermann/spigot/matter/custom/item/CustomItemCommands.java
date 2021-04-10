@@ -27,7 +27,7 @@ public class CustomItemCommands extends BaseCommand
     }
 
     @Subcommand("give")
-    @CommandPermission("dc.give")
+    @CommandPermission("matter.give")
     @CommandCompletion("@players @custom_items")
     public void give(CommandSender sender, OnlinePlayer receiver, String customItemName, @Default("1") int amount)
     {
@@ -74,7 +74,7 @@ public class CustomItemCommands extends BaseCommand
     }
 
     @Subcommand("giveall")
-    @CommandPermission("dc.giveall")
+    @CommandPermission("matter.giveall")
     @CommandCompletion("@players")
     public void give(CommandSender sender, OnlinePlayer receiver)
     {
