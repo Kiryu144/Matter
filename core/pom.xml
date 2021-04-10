@@ -47,8 +47,8 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
-                                    <pattern>co.aikar</pattern>
-                                    <shadedPattern>shaded.co.aikar</shadedPattern>
+                                    <pattern>co.aikar.commands</pattern>
+                                    <shadedPattern>shaded.co.aikar.commands</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
