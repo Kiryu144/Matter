@@ -111,7 +111,7 @@ public class CustomBlockListener implements Listener
     @EventHandler
     private void onInventoryCreativeEvent(InventoryCreativeEvent event)
     {
-        if (event.getCurrentItem() != null && !event.getCurrentItem().getType().isAir())
+        if (event.getCurrentItem() != null && !event.getCurrentItem().getType().isAir() && event.getRawSlot() >= 0 && event.getRawSlot() < 9)
         {
             return;
         }
