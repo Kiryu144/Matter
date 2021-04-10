@@ -9,6 +9,7 @@ import at.dklostermann.spigot.matter.custom.block.CustomBlockRegistry;
 import at.dklostermann.spigot.matter.custom.item.CustomItemCommands;
 import at.dklostermann.spigot.matter.custom.item.CustomItemListener;
 import at.dklostermann.spigot.matter.custom.item.CustomItemRegistry;
+import at.dklostermann.spigot.matter.gui.InventoryGuiListener;
 import at.dklostermann.spigot.matter.plugin.CorePlugin;
 import co.aikar.commands.PaperCommandManager;
 import at.dklostermann.spigot.matter.blockdata.TripwireBlockDataIndexer;
@@ -36,6 +37,8 @@ public class Matter extends CorePlugin
     private CustomBlockListener customBlockListener;
     private CustomBlockCommands customBlockCommands;
 
+    private InventoryGuiListener inventoryGuiListener;
+
     // Library
     private PaperCommandManager commandManager = null;
 
@@ -62,6 +65,8 @@ public class Matter extends CorePlugin
         this.blockDataIndexerRegistry.register(new MultipleFacingBlockDataIndexer());
         this.blockDataIndexerRegistry.register(new TripwireBlockDataIndexer());
         this.blockDataIndexerRegistry.register(new NoteBlockDataIndexer());
+
+        this.inventoryGuiListener = new InventoryGuiListener(this);
 
         this.reload(this.getServer().getConsoleSender());
     }
@@ -160,5 +165,10 @@ public class Matter extends CorePlugin
     public CustomBlockRegistry getCustomBlockRegistry()
     {
         return this.customBlockRegistry;
+    }
+
+    public InventoryGuiListener getInventoryGuiListener()
+    {
+        return this.inventoryGuiListener;
     }
 }
