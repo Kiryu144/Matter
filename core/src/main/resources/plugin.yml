@@ -1,9 +1,0 @@
-name: Core
-version: 1.0.0
-api-version: 1.16
-main: net.andrasia.spigot.core.Core
-author: Kiryu144
-website: www.andrasia.net
-load: STARTUP
-commands:
-  core:

@@ -1,0 +1,9 @@
+name: Matter
+version: 1.0.0
+api-version: 1.16
+main: at.dklostermann.spigot.matter.Matter
+author: Kiryu144
+website: www.dklostermann.at
+load: STARTUP
+commands:
+  matter:
