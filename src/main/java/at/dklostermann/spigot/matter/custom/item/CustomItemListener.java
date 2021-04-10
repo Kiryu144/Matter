@@ -69,7 +69,7 @@ public class CustomItemListener implements Listener
     @EventHandler
     private void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event)
     {
-        if (event.isCancelled())
+        if (event.isCancelled() || !(event.getDamager() instanceof LivingEntity))
         {
             return;
         }
