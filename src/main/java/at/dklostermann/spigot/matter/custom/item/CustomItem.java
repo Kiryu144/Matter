@@ -4,6 +4,7 @@ import at.dklostermann.spigot.matter.Matter;
 import at.dklostermann.spigot.matter.registry.IRegistry;
 import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import org.apache.commons.lang.Validate;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -77,6 +78,8 @@ public class CustomItem implements IRegistryValue<CustomItem>
      */
     private Integer customModelData = null;
 
+    private String displayName = null;
+
     /**
      * Lore or Description of an item. Can be accessed by child classes.
      */
@@ -91,6 +94,7 @@ public class CustomItem implements IRegistryValue<CustomItem>
             this.customModelData = data.getInt("custom_model_data", -1);
             this.material = Material.valueOf(data.getString("material", "paper").toUpperCase());
             this.lore.addAll(data.getStringList("lore"));
+            this.displayName = data.getString("display_name");
         }
         catch (Exception exception)
         {
@@ -157,6 +161,12 @@ public class CustomItem implements IRegistryValue<CustomItem>
         return this;
     }
 
+    public CustomItem setDisplayName(@Nullable String displayName)
+    {
+        this.displayName = displayName;
+        return this;
+    }
+
     /**
      * Builds an itemstack out of the material specified. Will also call setInitialMeta() and setInitialData(),
      * which are used to set any item metadata. Overwriting is possible, but not recommended. For that please refer to
@@ -185,7 +195,8 @@ public class CustomItem implements IRegistryValue<CustomItem>
         PersistentDataContainer persistentDataContainer = meta.getPersistentDataContainer();
         this.setInitialData(persistentDataContainer);
 
-        meta.setLocalizedName(String.format("digoncraft.customitem.%s.name", this.getRegistryName()));
+        meta.setDisplayName(ChatColor.RESET + this.displayName);
+        meta.setLocalizedName(String.format("matter.customitem.%s.name", this.getRegistryName()));
         meta.setCustomModelData(this.customModelData);
         meta.setLore(this.lore);
     }
