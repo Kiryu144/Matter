@@ -10,41 +10,54 @@ import java.util.List;
 
 public class CustomInventory extends BukkitInventory
 {
-    private final int[] slots;
+    private final int[] slotsRealToCustom;
+    private final int[] slotsCustomToReal;
 
-    public CustomInventory(@NotNull InventoryType inventoryType, @Nonnull List<Integer> slots)
+    public CustomInventory(@NotNull InventoryType inventoryType, @Nonnull String title, @Nonnull List<Integer> slots)
     {
-        super(inventoryType);
-        this.slots = slots.stream().mapToInt(i->i).toArray();
+        super(inventoryType, title);
+        this.slotsRealToCustom = new int[this.getInventory().getSize()];
+        this.slotsCustomToReal = slots.stream().mapToInt(i->i).toArray();
+
+        for (int i = 0; i < this.slotsRealToCustom.length; ++i)
+        {
+            this.slotsRealToCustom[i] = slots.indexOf(i);
+        }
     }
 
-    public CustomInventory(int size, @Nonnull List<Integer> slots)
+    public CustomInventory(int size, @Nonnull String title, @Nonnull List<Integer> slots)
     {
-        super(size);
-        this.slots = slots.stream().mapToInt(i->i).toArray();
+        super(size, title);
+        this.slotsRealToCustom = new int[this.getInventory().getSize()];
+        this.slotsCustomToReal = slots.stream().mapToInt(i->i).toArray();
+
+        for (int i = 0; i < this.slotsRealToCustom.length; ++i)
+        {
+            this.slotsRealToCustom[i] = slots.indexOf(i);
+        }
     }
 
-    public int getSlot(int slot)
+    public int convertRealToCustom(int slot)
     {
-        return this.slots[slot];
+        return this.slotsRealToCustom[slot];
     }
 
     @Override
     public void setItem(int index, @Nullable ItemStack itemStack)
     {
-        super.setItem(this.getSlot(index), itemStack);
+        super.setItem(this.slotsCustomToReal[index], itemStack);
     }
 
     @Override
     public int getSize()
     {
-        return this.slots.length;
+        return this.slotsRealToCustom.length;
     }
 
     @NotNull
     @Override
     public ItemStack getItem(int index)
     {
-        return super.getItem(this.getSlot(index));
+        return super.getItem(this.slotsCustomToReal[index]);
     }
 }

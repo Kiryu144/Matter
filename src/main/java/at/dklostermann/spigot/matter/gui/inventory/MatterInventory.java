@@ -14,6 +14,7 @@ public abstract class MatterInventory
     @Nonnull
     public abstract ItemStack getItem(int index);
     public abstract Inventory getInventory();
+    public abstract void rename(@Nonnull String title);
 
     public void clear()
     {

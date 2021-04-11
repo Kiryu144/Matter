@@ -1,7 +1,9 @@
 package at.dklostermann.spigot.matter.gui.inventory;
 
+import at.dklostermann.spigot.matter.Matter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -11,16 +13,32 @@ import javax.annotation.Nonnull;
 
 public class BukkitInventory extends MatterInventory
 {
-    private final Inventory inventory;
+    private Inventory inventory;
 
-    public BukkitInventory(@Nonnull InventoryType inventoryType)
+    public BukkitInventory(@Nonnull InventoryType inventoryType, @Nonnull String title)
     {
-        this.inventory = Bukkit.createInventory(null, inventoryType);
+        this.inventory = Bukkit.createInventory(null, inventoryType, title);
     }
 
-    public BukkitInventory(int slots)
+    public BukkitInventory(int slots, @Nonnull String title)
     {
-        this.inventory = Bukkit.createInventory(null, slots);
+        this.inventory = Bukkit.createInventory(null, slots, title);
+    }
+
+    @Override
+    public void rename(@Nonnull String title)
+    {
+        Inventory newInventory = Bukkit.createInventory(null, this.inventory.getSize(), title);
+        ItemStack[] contents = this.inventory.getContents();
+        newInventory.setContents(contents);
+        Matter.getInstance().getInventoryGuiListener().replace(this.inventory, newInventory);
+
+        for (HumanEntity humanEntity : this.inventory.getViewers().toArray(new HumanEntity[0]))
+        {
+            humanEntity.openInventory(newInventory);
+        }
+
+        this.inventory = newInventory;
     }
 
     @Override

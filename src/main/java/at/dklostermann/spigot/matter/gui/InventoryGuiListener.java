@@ -1,11 +1,13 @@
 package at.dklostermann.spigot.matter.gui;
 
+import at.dklostermann.spigot.matter.gui.button.IGuiButton;
 import at.dklostermann.spigot.matter.gui.inventory.CustomInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
@@ -36,6 +38,11 @@ public class InventoryGuiListener implements Listener
         return this.inventoryGuiMap.get(inventory);
     }
 
+    public void replace(@Nonnull Inventory from, @Nonnull Inventory to)
+    {
+        this.inventoryGuiMap.put(to, this.inventoryGuiMap.get(from));
+    }
+
     @EventHandler
     private void onInventoryClickEvent(InventoryClickEvent event)
     {
@@ -59,7 +66,7 @@ public class InventoryGuiListener implements Listener
 
         if (inventoryGui.getMatterInventory() instanceof CustomInventory)
         {
-            slot = ((CustomInventory) inventoryGui.getMatterInventory()).getSlot(slot);
+            slot = ((CustomInventory) inventoryGui.getMatterInventory()).convertRealToCustom(slot);
         }
 
         IGuiButton button = inventoryGui.getButton(slot);
@@ -68,6 +75,11 @@ public class InventoryGuiListener implements Listener
             if (button == null || !button.onInteract(inventoryGui, (Player) event.getWhoClicked(), event.getClick()))
             {
                 event.setCancelled(true);
+                if (inventoryGui.isDone())
+                {
+                    event.getWhoClicked().closeInventory();
+                    this.inventoryGuiMap.remove(inventoryGui.getMatterInventory().getInventory());
+                }
             }
         }
         catch (Exception exception)
@@ -85,6 +97,16 @@ public class InventoryGuiListener implements Listener
         {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    private void onInventoryCloseEvent(InventoryCloseEvent event)
+    {
+        if (event.getView().getTopInventory() != event.getInventory())
+        {
+            return;
+        }
+        // TODO Implement
     }
 }
 

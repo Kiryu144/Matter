@@ -6,16 +6,16 @@ import at.dklostermann.spigot.matter.blockdata.NoteBlockDataIndexer;
 import at.dklostermann.spigot.matter.custom.block.CustomBlockListener;
 import at.dklostermann.spigot.matter.custom.block.CustomBlockParser;
 import at.dklostermann.spigot.matter.custom.block.CustomBlockRegistry;
-import at.dklostermann.spigot.matter.custom.item.CustomItemCommands;
-import at.dklostermann.spigot.matter.custom.item.CustomItemListener;
-import at.dklostermann.spigot.matter.custom.item.CustomItemRegistry;
+import at.dklostermann.spigot.matter.custom.item.*;
+import at.dklostermann.spigot.matter.gui.InventoryGui;
 import at.dklostermann.spigot.matter.gui.InventoryGuiListener;
+import at.dklostermann.spigot.matter.gui.button.GuiGiveItemButton;
+import at.dklostermann.spigot.matter.gui.inventory.BukkitInventory;
 import at.dklostermann.spigot.matter.plugin.CorePlugin;
 import co.aikar.commands.PaperCommandManager;
 import at.dklostermann.spigot.matter.blockdata.TripwireBlockDataIndexer;
 import at.dklostermann.spigot.matter.config.JsonConfiguration;
 import at.dklostermann.spigot.matter.custom.block.CustomBlockCommands;
-import at.dklostermann.spigot.matter.custom.item.CustomItemParser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -38,6 +38,7 @@ public class Matter extends CorePlugin
     private CustomBlockCommands customBlockCommands;
 
     private InventoryGuiListener inventoryGuiListener;
+    private InventoryGui customItemGUI;
 
     // Library
     private PaperCommandManager commandManager = null;
@@ -147,6 +148,14 @@ public class Matter extends CorePlugin
         }
 
         Bukkit.getOnlinePlayers().forEach(player -> this.customItemRegistry.fixInventory(player.getInventory()));
+
+        this.customItemGUI = new InventoryGui(new BukkitInventory(9*6, "Custom Item GUI"));
+        int slot = 0;
+        for (CustomItem customItem : this.customItemRegistry.values())
+        {
+            this.customItemGUI.setButton(slot++, new GuiGiveItemButton(customItem.createItemStack()));
+        }
+        this.inventoryGuiListener.register(this.customItemGUI);
     }
 
     @Nonnull
@@ -167,6 +176,13 @@ public class Matter extends CorePlugin
         return this.customBlockRegistry;
     }
 
+    @Nonnull
+    public InventoryGui getCustomItemGUI()
+    {
+        return this.customItemGUI;
+    }
+
+    @Nonnull
     public InventoryGuiListener getInventoryGuiListener()
     {
         return this.inventoryGuiListener;
