@@ -3,6 +3,9 @@ package at.dklostermann.spigot.matter;
 import at.dklostermann.spigot.matter.blockdata.MaterialBlockDataIndexerRegistry;
 import at.dklostermann.spigot.matter.blockdata.MultipleFacingBlockDataIndexer;
 import at.dklostermann.spigot.matter.blockdata.NoteBlockDataIndexer;
+import at.dklostermann.spigot.matter.blockdata.TripwireBlockDataIndexer;
+import at.dklostermann.spigot.matter.config.JsonConfiguration;
+import at.dklostermann.spigot.matter.custom.block.CustomBlockCommands;
 import at.dklostermann.spigot.matter.custom.block.CustomBlockListener;
 import at.dklostermann.spigot.matter.custom.block.CustomBlockParser;
 import at.dklostermann.spigot.matter.custom.block.CustomBlockRegistry;
@@ -11,22 +14,26 @@ import at.dklostermann.spigot.matter.gui.InventoryGui;
 import at.dklostermann.spigot.matter.gui.InventoryGuiListener;
 import at.dklostermann.spigot.matter.gui.button.GuiGiveItemButton;
 import at.dklostermann.spigot.matter.gui.inventory.BukkitInventory;
-import at.dklostermann.spigot.matter.plugin.CorePlugin;
 import co.aikar.commands.PaperCommandManager;
-import at.dklostermann.spigot.matter.blockdata.TripwireBlockDataIndexer;
-import at.dklostermann.spigot.matter.config.JsonConfiguration;
-import at.dklostermann.spigot.matter.custom.block.CustomBlockCommands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 
-public class Matter extends CorePlugin
+public class Matter extends JavaPlugin
 {
     private static Matter instance;
+    private final MatterLogger matterLogger = new MatterLogger(this);
     private final MaterialBlockDataIndexerRegistry blockDataIndexerRegistry = new MaterialBlockDataIndexerRegistry();
 
     private CustomItemRegistry customItemRegistry;
@@ -70,6 +77,33 @@ public class Matter extends CorePlugin
         this.inventoryGuiListener = new InventoryGuiListener(this);
 
         this.reload(this.getServer().getConsoleSender());
+    }
+
+    @Override
+    public @NotNull Logger getLogger()
+    {
+        return this.matterLogger;
+    }
+
+    @Nonnull
+    public FileConfiguration loadConfiguration(@Nonnull String filename) throws IOException, InvalidConfigurationException
+    {
+        FileConfiguration configuration = null;
+        if (filename.endsWith(".yml") || filename.endsWith(".yaml"))
+        {
+            configuration = new YamlConfiguration();
+        }
+        else if (filename.endsWith(".json"))
+        {
+            configuration = new JsonConfiguration();
+        }
+        else
+        {
+            throw new IllegalArgumentException("Unable to determine configuration type using file ending.");
+        }
+
+        configuration.load(filename);
+        return configuration;
     }
 
     public static Matter getInstance()
