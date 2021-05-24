@@ -8,6 +8,7 @@ import at.dklostermann.spigot.matter.config.JsonConfiguration;
 import at.dklostermann.spigot.matter.custom.CustomGameObject;
 import at.dklostermann.spigot.matter.custom.CustomGameObjects;
 import at.dklostermann.spigot.matter.custom.block.*;
+import at.dklostermann.spigot.matter.custom.gui.font.NegativeSpacesFont;
 import at.dklostermann.spigot.matter.custom.item.*;
 import at.dklostermann.spigot.matter.custom.gui.InventoryGui;
 import at.dklostermann.spigot.matter.custom.gui.InventoryGuiListener;

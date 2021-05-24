@@ -2,6 +2,7 @@ package at.dklostermann.spigot.matter;
 
 import at.dklostermann.spigot.matter.custom.gui.ExpressionInventoryGui;
 import at.dklostermann.spigot.matter.custom.gui.button.GuiLambdaButton;
+import at.dklostermann.spigot.matter.custom.gui.font.NegativeSpacesFont;
 import at.dklostermann.spigot.matter.custom.gui.inventory.CustomInventory;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -153,12 +154,14 @@ public class MatterCommands extends BaseCommand
     @CommandPermission("matter.gui")
     public void test(Player sender, int title)
     {
+        /*
         InputNumberGui inputNumberGui = new InputNumberGui(iResult -> {
             InputNumberGui.Result result = (InputNumberGui.Result) iResult;
             sender.sendMessage("You wrote: " + (result == null ? "null" : result.getValue()));
         });
         Matter.getInstance().getInventoryGuiListener().register(inputNumberGui);
         sender.openInventory(inputNumberGui.getMatterInventory().getInventory());
+         */
     }
 }
 

@@ -1,0 +1,51 @@
+{
+  "providers": [
+    {
+      "type": "ttf",
+      "file": "minecraft:negative_spaces.ttf",
+      "shift": [0.0, 0.0],
+      "size": 10.0,
+      "oversample": 1.0
+    },
+    {
+      "ascent": 0,
+      "chars":[
+        "\uc100\uc13C"
+      ],
+      "height": 8,
+      "file":"minecraft:gui/font_2px.png",
+      "type":"bitmap"
+    },
+    {
+      "ascent": 0,
+      "chars":[
+        "\uc101\uc11E\uc130\uc132\uc145"
+      ],
+      "height": 8,
+      "file":"minecraft:gui/font_4px.png",
+      "type":"bitmap"
+    },
+    {
+      "ascent": 0,
+      "chars":[
+        "\uc102\uc103\uc104\uc105\uc106\uc107\uc108\uc109\uc10A\uc10B\uc10C\uc10D\uc10E\uc10F\uc110\uc111",
+        "\uc112\uc113\uc114\uc116\uc117\uc118\uc119\uc11A\uc11B\uc11C\uc11D\uc11F\uc120\uc121\uc122\uc123",
+        "\uc124\uc125\uc126\uc127\uc128\uc129\uc12A\uc12B\uc12C\uc12D\uc12E\uc12F\uc131\uc133\uc134\uc135",
+        "\uc136\uc137\uc138\uc139\uc13A\uc13B\uc13D\uc13E\uc13F\uc140\uc141\uc142\uc143\uc144\uc146\uc147",
+        "\uc148\uc149\uc14A\uc14B\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      ],
+      "height": 8,
+      "file":"minecraft:gui/font_6px.png",
+      "type":"bitmap"
+    },
+    {
+      "ascent": 0,
+      "chars":[
+        "\uc115\uc14C"
+      ],
+      "height": 8,
+      "file":"minecraft:gui/font_7px.png",
+      "type":"bitmap"
+    }
+  ]
+}
