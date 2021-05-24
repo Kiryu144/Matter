@@ -1,20 +1,14 @@
 package at.dklostermann.spigot.matter.custom.item.types;
 
-import at.dklostermann.spigot.matter.custom.item.CustomItemParseException;
 import at.dklostermann.spigot.matter.custom.item.CustomItemBlockInteraction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomItemTool extends CustomItemDurability
 {
-    public CustomItemTool(@NotNull String registryName, @NotNull ConfigurationSection data) throws CustomItemParseException
+    public CustomItemTool(@NotNull ConfigurationSection config, @NotNull String registryName, int registryIndex, short registryUUID)
     {
-        super(registryName, data);
-    }
-
-    public CustomItemTool(@NotNull String registryName)
-    {
-        super(registryName);
+        super(config, registryName, registryIndex, registryUUID);
     }
 
     @Override

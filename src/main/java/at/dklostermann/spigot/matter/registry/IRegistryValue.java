@@ -2,7 +2,7 @@ package at.dklostermann.spigot.matter.registry;
 
 import javax.annotation.Nonnull;
 
-public interface IRegistryValue<V>
+public interface IRegistryValue
 {
     /**
      * A unique identifier for this entry, if this entry is registered already it will return it's official registry name.
@@ -15,18 +15,16 @@ public interface IRegistryValue<V>
     String getRegistryName();
 
     /**
-     * Returns the registry index set by setRegistryIndex().
+     * Returns the registry index.
      *
-     * @see IRegistryValue#setRegistryIndex
      * @return Unique index for a given registry.
      */
     int getRegistryIndex();
 
     /**
-     * A unique index for this entry. This MUST be called by the registry only, and only once.
+     * Returns the registry UUID it is registered to.
      *
-     * @see IRegistry
-     * @param index Unique index for a given registry.
+     * @return registry uuid.
      */
-    void setRegistryIndex(IRegistry<? extends IRegistryValue<V>> owningRegistry, int index);
+    short getRegistryUUID();
 }

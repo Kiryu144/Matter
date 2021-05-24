@@ -1,5 +1,8 @@
 package at.dklostermann.spigot.matter.custom.item;
 
+import at.dklostermann.spigot.matter.custom.CustomGameObjectCommand;
+import at.dklostermann.spigot.matter.custom.block.CustomBlock;
+import at.dklostermann.spigot.matter.registry.IRegistry;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -12,18 +15,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @CommandAlias("matter")
-public class CustomItemCommands extends BaseCommand
+public class CustomItemCommands extends CustomGameObjectCommand<CustomItem>
 {
-    private CustomItemRegistry customItemRegistry;
-
-    public CustomItemCommands(CustomItemRegistry customItemRegistry)
+    public CustomItemCommands(IRegistry<CustomItem> registry)
     {
-        this.customItemRegistry = customItemRegistry;
-    }
-
-    public void setCustomItemRegistry(CustomItemRegistry customItemRegistry)
-    {
-        this.customItemRegistry = customItemRegistry;
+        super(registry);
     }
 
     @Subcommand("give")
@@ -43,7 +39,7 @@ public class CustomItemCommands extends BaseCommand
             return;
         }
 
-        CustomItem customItem = this.customItemRegistry.get(customItemName);
+        CustomItem customItem = this.getRegistry().get(customItemName);
         if (customItem == null)
         {
             sender.sendMessage(ChatColor.RED + "Unknown custom item " + customItemName);
@@ -91,7 +87,7 @@ public class CustomItemCommands extends BaseCommand
         }
 
         Location location = receiverPlayer.getLocation();
-        for (CustomItem customItem : this.customItemRegistry.values())
+        for (CustomItem customItem : this.getRegistry().values())
         {
             location.getWorld().dropItem(location, customItem.createItemStack());
         }

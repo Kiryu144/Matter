@@ -11,38 +11,6 @@ import javax.annotation.Nullable;
 
 public class CustomItemRegistry extends CommonRegistry<CustomItem>
 {
-    /**
-     * Combines two shorts into an integer.
-     *
-     * @param index left short
-     * @param id    right short
-     * @return combined integer
-     */
-    public static int Combine(short index, short id)
-    {
-        return (index << 16) | (id & 0xFFFF);
-    }
-
-    /**
-     * @param i Combined integer
-     * @return left short
-     * @see CustomItemRegistry#Combine
-     */
-    public static short GetIndex(int i)
-    {
-        return (short) (i >>> 16);
-    }
-
-    /**
-     * @param i Combined integer
-     * @return right short
-     * @see CustomItemRegistry#Combine
-     */
-    public static short GetID(int i)
-    {
-        return (short) (i & 0xFFFF);
-    }
-
     public boolean isCustomItem(@Nullable ItemStack itemStack)
     {
         if (itemStack == null)
@@ -63,7 +31,7 @@ public class CustomItemRegistry extends CommonRegistry<CustomItem>
 
     public void fixCustomItem(@Nullable ItemStack itemStack)
     {
-        this.get(itemStack, true);
+        this.get(itemStack);
     }
 
     public void fixInventory(@Nullable Inventory inventory)
@@ -75,11 +43,7 @@ public class CustomItemRegistry extends CommonRegistry<CustomItem>
 
         for (ItemStack itemStack : inventory.getContents())
         {
-            try
-            {
-                this.fixCustomItem(itemStack);
-            }
-            catch (Exception ignored) { }
+            this.fixCustomItem(itemStack);
         }
     }
 
@@ -88,12 +52,10 @@ public class CustomItemRegistry extends CommonRegistry<CustomItem>
      * The method also checks if the registry id is matching with the one stored in the itemstack.
      *
      * @param itemStack  ItemStack to check. Null is returned if itemstack is null.
-     * @param checkIndex If true fixes the registryIndex & registryID of the itemstack. Otherwise will match using
-     *                   the registryName which is way slower.
      * @return Returns the customitem if detected.
      */
     @Nullable
-    public CustomItem get(@Nullable ItemStack itemStack, boolean checkIndex)
+    public CustomItem get(@Nullable ItemStack itemStack)
     {
         if (itemStack == null)
         {
@@ -113,22 +75,18 @@ public class CustomItemRegistry extends CommonRegistry<CustomItem>
             return null;
         }
 
-        short registryID = GetID(id);
-        if (registryID != this.getInstanceID())
+        final short registryUUID = CustomItem.GetUUID(id);
+        if (registryUUID != this.getUUID())
         {
             String name = persistentDataContainer.get(CustomItem.ITEM_NAME_KEY, PersistentDataType.STRING);
-            if (!checkIndex)
-            {
-                return this.get(name);
-            }
 
             CustomItem customItem = this.get(name);
             short registryIndex = (short) customItem.getRegistryIndex();
-            persistentDataContainer.set(CustomItem.ITEM_REG_INDEX, PersistentDataType.INTEGER, Combine(registryIndex, this.getInstanceID()));
+            persistentDataContainer.set(CustomItem.ITEM_REG_INDEX, PersistentDataType.INTEGER, CustomItem.Combine(registryIndex, this.getUUID()));
             itemStack.setItemMeta(meta);
             return customItem;
         }
 
-        return this.get(GetIndex(id));
+        return this.get(CustomItem.GetIndex(id));
     }
 }

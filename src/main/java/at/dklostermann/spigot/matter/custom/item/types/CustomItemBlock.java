@@ -3,7 +3,6 @@ package at.dklostermann.spigot.matter.custom.item.types;
 import at.dklostermann.spigot.matter.custom.block.CustomBlock;
 import at.dklostermann.spigot.matter.custom.item.CustomItem;
 import at.dklostermann.spigot.matter.custom.item.CustomItemBlockInteraction;
-import at.dklostermann.spigot.matter.custom.item.CustomItemParseException;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -14,14 +13,9 @@ public class CustomItemBlock extends CustomItem
 {
     private CustomBlock customBlock;
 
-    public CustomItemBlock(@Nonnull String registryName, @Nonnull ConfigurationSection data) throws CustomItemParseException
+    public CustomItemBlock(@NotNull ConfigurationSection config, @NotNull String registryName, int registryIndex, short registryUUID)
     {
-        super(registryName, data);
-    }
-
-    public CustomItemBlock(@NotNull String registryName)
-    {
-        super(registryName);
+        super(config, registryName, registryIndex, registryUUID);
     }
 
     public void setCustomBlock(@Nonnull CustomBlock customBLock)

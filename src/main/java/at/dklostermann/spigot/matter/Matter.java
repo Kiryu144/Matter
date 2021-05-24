@@ -5,10 +5,9 @@ import at.dklostermann.spigot.matter.blockdata.MultipleFacingBlockDataIndexer;
 import at.dklostermann.spigot.matter.blockdata.NoteBlockDataIndexer;
 import at.dklostermann.spigot.matter.blockdata.TripwireBlockDataIndexer;
 import at.dklostermann.spigot.matter.config.JsonConfiguration;
-import at.dklostermann.spigot.matter.custom.block.CustomBlockCommands;
-import at.dklostermann.spigot.matter.custom.block.CustomBlockListener;
-import at.dklostermann.spigot.matter.custom.block.CustomBlockParser;
-import at.dklostermann.spigot.matter.custom.block.CustomBlockRegistry;
+import at.dklostermann.spigot.matter.custom.CustomGameObject;
+import at.dklostermann.spigot.matter.custom.CustomGameObjects;
+import at.dklostermann.spigot.matter.custom.block.*;
 import at.dklostermann.spigot.matter.custom.item.*;
 import at.dklostermann.spigot.matter.gui.InventoryGui;
 import at.dklostermann.spigot.matter.gui.InventoryGuiListener;
@@ -26,7 +25,10 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
@@ -36,13 +38,8 @@ public class Matter extends JavaPlugin
     private final MatterLogger matterLogger = new MatterLogger(this);
     private final MaterialBlockDataIndexerRegistry blockDataIndexerRegistry = new MaterialBlockDataIndexerRegistry();
 
-    private CustomItemRegistry customItemRegistry;
-    private CustomItemListener customItemListener;
-    private CustomItemCommands customItemCommands;
-
-    private CustomBlockRegistry customBlockRegistry;
-    private CustomBlockListener customBlockListener;
-    private CustomBlockCommands customBlockCommands;
+    private CustomGameObjects<CustomItem> customItems;
+    private CustomGameObjects<CustomBlock> customBlocks;
 
     private InventoryGuiListener inventoryGuiListener;
     private InventoryGui customItemGUI;
@@ -62,13 +59,13 @@ public class Matter extends JavaPlugin
         this.commandManager = new PaperCommandManager(this);
         this.commandManager.registerCommand(new MatterCommands());
 
-        this.customItemCommands = new CustomItemCommands(this.customItemRegistry);
-        this.customBlockCommands = new CustomBlockCommands(this.customBlockRegistry);
-        this.commandManager.registerCommand(this.customItemCommands);
-        this.commandManager.registerCommand(this.customBlockCommands);
+        final CustomItemRegistry customItemRegistry = new CustomItemRegistry();
+        this.customItems = new CustomGameObjects<>(customItemRegistry, new CustomItemListener(this, customItemRegistry), new CustomItemCommands(customItemRegistry), new CustomItemParser(customItemRegistry));
+        this.commandManager.registerCommand(this.customItems.getCommands());
 
-        this.customItemListener = new CustomItemListener(this, this.getCustomItemRegistry());
-        this.customBlockListener = new CustomBlockListener(this);
+        final CustomBlockRegistry customBlockRegistry = new CustomBlockRegistry();
+        this.customBlocks = new CustomGameObjects<>(customBlockRegistry, new CustomBlockListener(this, customBlockRegistry), new CustomBlockCommands(customBlockRegistry), new CustomBlockParser(customBlockRegistry, customItemRegistry));
+        this.commandManager.registerCommand(this.customBlocks.getCommands());
 
         this.blockDataIndexerRegistry.register(new MultipleFacingBlockDataIndexer());
         this.blockDataIndexerRegistry.register(new TripwireBlockDataIndexer());
@@ -111,81 +108,42 @@ public class Matter extends JavaPlugin
         return instance;
     }
 
+    public <T extends CustomGameObject> void reloadGameObject(@Nonnull CustomGameObjects<T> customGameObjects, @Nullable CommandSender commandSender)
+    {
+        if (customGameObjects.getParser() != null)
+        {
+            final Path path = Paths.get(this.getDataFolder().getAbsolutePath(), customGameObjects.getParser().getConfigName() + ".json");
+            final File file = path.toFile();
+            file.getParentFile().mkdirs();
+
+            JsonConfiguration jsonConfiguration = new JsonConfiguration();
+            try
+            {
+                jsonConfiguration.load(file);
+                customGameObjects.getParser().parseAll(jsonConfiguration);
+            } catch (IOException | InvalidConfigurationException e)
+            {
+                e.printStackTrace();
+                this.getServer().shutdown();
+            }
+        }
+
+        if (customGameObjects.getCommands() != null)
+        {
+            customGameObjects.getCommands().setRegistry(customGameObjects.getRegistry());
+        }
+    }
+
     public void reload(@Nullable CommandSender commandSender)
     {
-        try
-        {
-            CustomItemRegistry customItemRegistry = new CustomItemRegistry();
-            CustomItemParser customItemParser = new CustomItemParser(customItemRegistry);
+        this.reloadGameObject(this.customItems, commandSender);
+        this.reloadGameObject(this.customBlocks, commandSender);
 
-            JsonConfiguration jsonConfiguration = new JsonConfiguration();
-            jsonConfiguration.load(Paths.get(this.getDataFolder().toString(), "items.json").toFile());
-            customItemParser.parseItems(jsonConfiguration);
-
-            this.customItemRegistry = customItemRegistry;
-
-            this.commandManager.getCommandCompletions().registerCompletion("custom_items", context -> this.customItemRegistry.names());
-            if (commandSender != null)
-            {
-                commandSender.sendMessage(ChatColor.GREEN + String.format("Loaded %d items", this.customItemRegistry.values().size()));
-            }
-        }
-        catch (Exception exception)
-        {
-            exception.printStackTrace();
-            if (commandSender != null)
-            {
-                commandSender.sendMessage(ChatColor.RED + "Unable to load items: " + exception.getMessage());
-                commandSender.sendMessage(ChatColor.RED + "View log for more details.");
-            }
-            this.customItemRegistry = new CustomItemRegistry();
-        }
-        finally
-        {
-            this.customItemCommands.setCustomItemRegistry(this.customItemRegistry);
-            this.customItemListener.setCustomItemRegistry(this.customItemRegistry);
-        }
-
-        // TODO: Prevent code duplication here
-        try
-        {
-            CustomBlockRegistry customBlockRegistry = new CustomBlockRegistry();
-            CustomBlockParser customBlockParser = new CustomBlockParser(customBlockRegistry, this.customItemRegistry);
-
-            JsonConfiguration jsonConfiguration = new JsonConfiguration();
-            jsonConfiguration.load(Paths.get(this.getDataFolder().toString(), "blocks.json").toFile());
-            customBlockParser.parseBlocks(jsonConfiguration);
-
-            this.customBlockRegistry = customBlockRegistry;
-
-            this.commandManager.getCommandCompletions().registerCompletion("custom_blocks", context -> this.customBlockRegistry.names());
-            if (commandSender != null)
-            {
-                commandSender.sendMessage(ChatColor.GREEN + String.format("Loaded %d blocks", this.customBlockRegistry.values().size()));
-            }
-        }
-        catch (Exception exception)
-        {
-            exception.printStackTrace();
-            if (commandSender != null)
-            {
-                commandSender.sendMessage(ChatColor.RED + "Unable to load blocks: " + exception.getMessage());
-                commandSender.sendMessage(ChatColor.RED + "View log for more details.");
-            }
-            this.customBlockRegistry = new CustomBlockRegistry();
-        }
-        finally
-        {
-            this.customBlockCommands.setCustomBlockRegistry(this.customBlockRegistry);
-            this.customBlockListener.setCustomBlockRegistry(this.customBlockRegistry);
-            this.customBlockListener.setCustomItemRegistry(this.customItemRegistry);
-        }
-
-        Bukkit.getOnlinePlayers().forEach(player -> this.customItemRegistry.fixInventory(player.getInventory()));
+        Bukkit.getOnlinePlayers().forEach(player -> this.getCustomItemRegistry().fixInventory(player.getInventory()));
 
         this.customItemGUI = new InventoryGui(new BukkitInventory(9*6, "Custom Item GUI"));
         int slot = 0;
-        for (CustomItem customItem : this.customItemRegistry.values())
+        for (CustomItem customItem : this.getCustomItemRegistry().values())
         {
             this.customItemGUI.setButton(slot++, new GuiGiveItemButton(customItem.createItemStack()));
         }
@@ -201,13 +159,13 @@ public class Matter extends JavaPlugin
     @Nonnull
     public CustomItemRegistry getCustomItemRegistry()
     {
-        return this.customItemRegistry;
+        return (CustomItemRegistry) this.customItems.getRegistry();
     }
 
     @Nonnull
     public CustomBlockRegistry getCustomBlockRegistry()
     {
-        return this.customBlockRegistry;
+        return (CustomBlockRegistry) this.customBlocks.getRegistry();
     }
 
     @Nonnull

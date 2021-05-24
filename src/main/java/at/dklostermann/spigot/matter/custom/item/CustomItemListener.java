@@ -1,5 +1,7 @@
 package at.dklostermann.spigot.matter.custom.item;
 
+import at.dklostermann.spigot.matter.custom.CustomGameObjectListener;
+import at.dklostermann.spigot.matter.registry.IRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -20,25 +22,18 @@ import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nonnull;
 
-public class CustomItemListener implements Listener
+public class CustomItemListener extends CustomGameObjectListener<CustomItem>
 {
-    private CustomItemRegistry customItemRegistry;
-
-    public CustomItemListener(@Nonnull Plugin plugin, @Nonnull CustomItemRegistry customItemRegistry)
+    public CustomItemListener(@Nonnull Plugin plugin, @Nonnull IRegistry<CustomItem> registry)
     {
-        this.customItemRegistry = customItemRegistry;
+        super(registry);
         Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
-
-    public void setCustomItemRegistry(CustomItemRegistry customItemRegistry)
-    {
-        this.customItemRegistry = customItemRegistry;
     }
 
     @EventHandler
     private void onPlayerInteractEvent(PlayerInteractEvent event)
     {
-        CustomItem customItem = this.customItemRegistry.get(event.getItem(), false);
+        CustomItem customItem = ((CustomItemRegistry)this.getRegistry()).get(event.getItem());
         if (customItem != null)
         {
             boolean isAttack = event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK);
@@ -57,7 +52,7 @@ public class CustomItemListener implements Listener
         }
 
         ItemStack itemStack = event.getPlayer().getInventory().getItem(event.getHand());
-        CustomItem customItem = this.customItemRegistry.get(itemStack, false);
+        CustomItem customItem = ((CustomItemRegistry)this.getRegistry()).get(itemStack);
         if (customItem != null)
         {
             CustomItemInteraction customItemInteraction = new CustomItemInteraction(event.getHand(), false, itemStack,
@@ -76,7 +71,7 @@ public class CustomItemListener implements Listener
 
         LivingEntity livingEntity = (LivingEntity) event.getDamager();
         ItemStack itemStack = livingEntity.getActiveItem();
-        CustomItem customItem = this.customItemRegistry.get(itemStack, false);
+        CustomItem customItem = ((CustomItemRegistry)this.getRegistry()).get(itemStack);
         if (customItem != null)
         {
             CustomItemInteraction customItemInteraction = new CustomItemInteraction(EquipmentSlot.HAND, true,
@@ -95,7 +90,7 @@ public class CustomItemListener implements Listener
 
         Player player = event.getPlayer();
         ItemStack itemStack = event.getPlayer().getInventory().getItem(event.getPlayer().getInventory().getHeldItemSlot());
-        CustomItem customItem = this.customItemRegistry.get(itemStack, false);
+        CustomItem customItem = ((CustomItemRegistry)this.getRegistry()).get(itemStack);
         if (customItem != null)
         {
             CustomItemBlockInteraction customItemBlockInteraction = new CustomItemBlockInteraction(
@@ -115,7 +110,7 @@ public class CustomItemListener implements Listener
 
         Player player = event.getPlayer();
         ItemStack itemStack = event.getItemInHand();
-        CustomItem customItem = this.customItemRegistry.get(itemStack, false);
+        CustomItem customItem = ((CustomItemRegistry)this.getRegistry()).get(itemStack);
         if (customItem != null)
         {
             CustomItemBlockInteraction customItemBlockInteraction = new CustomItemBlockInteraction(
@@ -128,20 +123,20 @@ public class CustomItemListener implements Listener
     @EventHandler
     private void onPlayerJoinEvent(PlayerJoinEvent event)
     {
-        this.customItemRegistry.fixInventory(event.getPlayer().getInventory());
+        ((CustomItemRegistry)this.getRegistry()).fixInventory(event.getPlayer().getInventory());
     }
 
     @EventHandler
     private void onInventoryOpen(InventoryOpenEvent event)
     {
         // TODO: Evaluate performance impact
-        this.customItemRegistry.fixInventory(event.getInventory());
+        ((CustomItemRegistry)this.getRegistry()).fixInventory(event.getInventory());
     }
 
     @EventHandler
     private void onItemPickupEvent(EntityPickupItemEvent event)
     {
-        this.customItemRegistry.fixCustomItem(event.getItem().getItemStack());
+        ((CustomItemRegistry)this.getRegistry()).fixCustomItem(event.getItem().getItemStack());
     }
 }
 

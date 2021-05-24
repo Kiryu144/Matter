@@ -1,10 +1,7 @@
 package at.dklostermann.spigot.matter.custom.item;
 
 import at.dklostermann.spigot.matter.Matter;
-import at.dklostermann.spigot.matter.registry.IRegistry;
-import at.dklostermann.spigot.matter.registry.IRegistryValue;
-import org.apache.commons.lang.Validate;
-import org.bukkit.ChatColor;
+import at.dklostermann.spigot.matter.custom.CustomGameObject;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -42,7 +39,7 @@ import java.util.List;
  *                 we fetch the corresponding CustomItem through the ITEM_NAME_KEY and fix the stored registryID and
  *                 registryIndex in the item, so the next lookup can be a lot faster.
  */
-public class CustomItem implements IRegistryValue<CustomItem>
+public class CustomItem extends CustomGameObject
 {
     /**
      * This is the namespaced key, which stores the registry name in the itemstack meta.
@@ -59,15 +56,6 @@ public class CustomItem implements IRegistryValue<CustomItem>
     public static final NamespacedKey ITEM_REG_INDEX = new NamespacedKey(Matter.getInstance(), "iri");
 
     /**
-     * @see IRegistryValue
-     * @see CustomItem#ITEM_NAME_KEY
-     * @see CustomItem#ITEM_REG_INDEX
-     */
-    private final String registryName;
-    private short registryIndex;
-    private short registryID;
-
-    /**
      * This is the vanilla material to use for the ItemStack representation.
      * This also defines properties like stacksize, durability resolution, etc.
      */
@@ -78,69 +66,25 @@ public class CustomItem implements IRegistryValue<CustomItem>
      */
     private Integer customModelData = null;
 
-    private String displayName = null;
-
     /**
-     * Lore or Description of an item. Can be accessed by child classes.
+     * Lore or Description of an item.
      */
     protected List<String> lore = new ArrayList<>();
 
-    public CustomItem(@Nonnull String registryName, @Nonnull ConfigurationSection data) throws CustomItemParseException
+    public CustomItem(@Nonnull ConfigurationSection config, @Nonnull String registryName, int registryIndex, short registryUUID)
     {
-        this.registryName = registryName;
+        super(registryName, registryIndex, registryUUID);
 
         try
         {
-            this.customModelData = data.getInt("custom_model_data", -1);
-            this.material = Material.valueOf(data.getString("material", "paper").toUpperCase());
-            this.lore.addAll(data.getStringList("lore"));
-            this.displayName = data.getString("display_name");
+            this.customModelData = config.getInt("custom_model_data", -1);
+            this.material = Material.valueOf(config.getString("material", "paper").toUpperCase());
+            this.lore.addAll(config.getStringList("lore"));
         }
         catch (Exception exception)
         {
             throw new CustomItemParseException(exception);
         }
-    }
-
-    public CustomItem(@Nonnull String registryName)
-    {
-        this.registryName = registryName;
-    }
-
-    public void onInteract(@Nonnull CustomItemInteraction interaction)
-    {
-
-    }
-
-    public void onBlockChange(@Nonnull CustomItemBlockInteraction interaction)
-    {
-
-    }
-
-    @Override
-    @Nonnull
-    public String getRegistryName()
-    {
-        return this.registryName;
-    }
-
-    @Override
-    public int getRegistryIndex()
-    {
-        return this.registryIndex;
-    }
-
-    @Override
-    public void setRegistryIndex(@Nonnull IRegistry<? extends IRegistryValue<CustomItem>> owningRegistry, int index)
-    {
-        Validate.isTrue(index < Short.MAX_VALUE);
-        this.registryID = owningRegistry.getInstanceID();
-        this.registryIndex = (short) index;
-    }
-
-    public short getRegistryID()
-    {
-        return this.registryID;
     }
 
     public CustomItem setMaterial(@Nonnull Material material)
@@ -161,10 +105,14 @@ public class CustomItem implements IRegistryValue<CustomItem>
         return this;
     }
 
-    public CustomItem setDisplayName(@Nullable String displayName)
+    public void onInteract(@Nonnull CustomItemInteraction interaction)
     {
-        this.displayName = displayName;
-        return this;
+
+    }
+
+    public void onBlockChange(@Nonnull CustomItemBlockInteraction interaction)
+    {
+
     }
 
     /**
@@ -195,7 +143,6 @@ public class CustomItem implements IRegistryValue<CustomItem>
         PersistentDataContainer persistentDataContainer = meta.getPersistentDataContainer();
         this.setInitialData(persistentDataContainer);
 
-        meta.setDisplayName(ChatColor.RESET + this.displayName);
         meta.setLocalizedName(String.format("matter.customitem.%s.name", this.getRegistryName()));
         meta.setCustomModelData(this.customModelData);
         meta.setLore(this.lore);
@@ -211,6 +158,38 @@ public class CustomItem implements IRegistryValue<CustomItem>
     protected void setInitialData(@Nonnull PersistentDataContainer persistentDataContainer)
     {
         persistentDataContainer.set(ITEM_NAME_KEY, PersistentDataType.STRING, this.getRegistryName());
-        persistentDataContainer.set(ITEM_REG_INDEX, PersistentDataType.INTEGER, CustomItemRegistry.Combine((short) this.getRegistryIndex(), this.registryID));
+        persistentDataContainer.set(ITEM_REG_INDEX, PersistentDataType.INTEGER, Combine((short) this.getRegistryIndex(), this.getRegistryUUID()));
+    }
+
+    /**
+     * Combines two shorts into an integer.
+     *
+     * @param index left short
+     * @param id    right short
+     * @return combined integer
+     */
+    public static int Combine(short index, short id)
+    {
+        return (index << 16) | (id & 0xFFFF);
+    }
+
+    /**
+     * @param i Combined integer
+     * @return left short
+     * @see CustomItem#Combine
+     */
+    public static short GetIndex(int i)
+    {
+        return (short) (i >>> 16);
+    }
+
+    /**
+     * @param i Combined integer
+     * @return right short
+     * @see CustomItem#Combine
+     */
+    public static short GetUUID(int i)
+    {
+        return (short) (i & 0xFFFF);
     }
 }

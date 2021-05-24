@@ -1,27 +1,25 @@
 package at.dklostermann.spigot.matter.custom.block;
 
+import at.dklostermann.spigot.matter.custom.CustomGameObject;
 import at.dklostermann.spigot.matter.custom.block.representation.IBlockRepresentation;
 import at.dklostermann.spigot.matter.custom.item.CustomItem;
-import at.dklostermann.spigot.matter.registry.IRegistry;
-import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CustomBlock implements IRegistryValue<CustomBlock>
+public class CustomBlock extends CustomGameObject
 {
-    private final String registryName;
     private final IBlockRepresentation blockRepresentation;
     private final CustomItem customItem;
 
-    private int registryIndex;
-
-    public CustomBlock(String registryName, IBlockRepresentation blockRepresentation, CustomItem customItem)
+    public CustomBlock(@NotNull String registryName, int registryIndex, short registryUUID, @Nonnull IBlockRepresentation blockRepresentation, @Nullable CustomItem customItem)
     {
-        this.registryName = registryName;
+        super(registryName, registryIndex, registryUUID);
+
         this.blockRepresentation = blockRepresentation;
         this.customItem = customItem;
     }
@@ -39,24 +37,5 @@ public class CustomBlock implements IRegistryValue<CustomBlock>
     public CustomItem getCustomItem()
     {
         return this.customItem;
-    }
-
-    @Override
-    @Nonnull
-    public String getRegistryName()
-    {
-        return this.registryName;
-    }
-
-    @Override
-    public int getRegistryIndex()
-    {
-        return this.registryIndex;
-    }
-
-    @Override
-    public void setRegistryIndex(IRegistry<? extends IRegistryValue<CustomBlock>> owningRegistry, int index)
-    {
-        this.registryIndex = index;
     }
 }

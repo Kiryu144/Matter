@@ -1,34 +1,50 @@
 package at.dklostermann.spigot.matter.registry;
 
+import org.apache.commons.lang.Validate;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Function;
 
-public class CommonRegistry<V extends IRegistryValue<V>> implements IRegistry<V>
+public class CommonRegistry<V extends IRegistryValue> implements IRegistry<V>
 {
+    private short uuid = (short) (Math.random() * Short.MAX_VALUE);
     private final Map<String, V> names = new HashMap<>();
     private final List<V> valueList = new ArrayList<>();
     private final List<String> nameList = new ArrayList<>();
 
-    private short instanceID;
-
     public CommonRegistry()
     {
-        this.instanceID = (short) new Random().nextInt(Short.MAX_VALUE);
+        this.clear();
     }
 
     @Override
-    public void register(@Nonnull V value)
+    public V register(Function<Integer, V> function)
     {
+        final int index = this.valueList.size();
+        final V value = function.apply(index);
+
+        Validate.notNull(value);
+
         final String registryName = value.getRegistryName();
         if (this.names.containsKey(registryName))
         {
             throw new IllegalStateException("Value with registry name was already registered.");
         }
+
         this.names.put(registryName, value);
         this.valueList.add(value);
         this.nameList.add(registryName);
-        value.setRegistryIndex(this, this.valueList.size() - 1);
+
+        this.postRegister(value);
+
+        return value;
+    }
+
+    protected void postRegister(@Nonnull V value)
+    {
+
     }
 
     @Override
@@ -65,9 +81,9 @@ public class CommonRegistry<V extends IRegistryValue<V>> implements IRegistry<V>
     }
 
     @Override
-    public short getInstanceID()
+    public short getUUID()
     {
-        return this.instanceID;
+        return this.uuid;
     }
 
     @Override
@@ -76,6 +92,6 @@ public class CommonRegistry<V extends IRegistryValue<V>> implements IRegistry<V>
         this.names.clear();
         this.valueList.clear();
         this.nameList.clear();
-        this.instanceID = (short) new Random().nextInt(Short.MAX_VALUE);
+        this.uuid = (short) (Math.random() * Short.MAX_VALUE);
     }
 }

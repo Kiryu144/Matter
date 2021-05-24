@@ -6,6 +6,7 @@ import at.dklostermann.spigot.matter.custom.block.representation.RotatableBlockR
 import at.dklostermann.spigot.matter.custom.block.representation.SolidBlockRepresentation;
 import at.dklostermann.spigot.matter.registry.CommonRegistry;
 import at.dklostermann.spigot.matter.blockdata.IBlockDataIndexer;
+import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -13,10 +14,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.function.Function;
 
 /**
  * This registry extension provides an easy way to find the CustomBlock for a Block.
@@ -27,9 +30,8 @@ public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
     private Entity lastCorrelatingEntity = null; // TODO: This is very hacky, please find a better way soon.
 
     @Override
-    public void register(@Nonnull CustomBlock value)
+    protected void postRegister(@NotNull CustomBlock value)
     {
-        super.register(value);
         IBlockRepresentation blockRepresentation = value.getBlockRepresentation();
         this.register(blockRepresentation, value);
     }
@@ -132,7 +134,10 @@ public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
     public void clear()
     {
         super.clear();
-        Arrays.fill(this.blockReferences, null);
+        if (this.blockReferences != null)
+        {
+            Arrays.fill(this.blockReferences, null);
+        }
         this.lastCorrelatingEntity = null;
     }
 }

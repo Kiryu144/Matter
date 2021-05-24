@@ -3,6 +3,7 @@ package at.dklostermann.spigot.matter.registry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * In this context, a registry is basically a container with two keys (String, int) per value.
@@ -10,15 +11,14 @@ import java.util.List;
  * The Integer key is practially an index, which is choosen by the IRegistry implementation. It is unique
  * and provides a way to access any entry ideally in a O(0) manner.
  */
-public interface IRegistry<V extends IRegistryValue<V>>
+public interface IRegistry<V extends IRegistryValue>
 {
     /**
-     * Registers a value to the registry. Given value must be in a valid state for
-     * getRegistryName() to return a proper, unique value.
+     * Registers a value to the registry.
      *
-     * @param value The value to register.
+     * @param function Function that gives the new registry index
      */
-    void register(@Nonnull V value);
+    V register(Function<Integer, V> function);
 
     /**
      * Fetched the value given the registry name. This returns the instance, not a copy.
@@ -54,7 +54,7 @@ public interface IRegistry<V extends IRegistryValue<V>>
     /**
      * @return Returns a random value created in the constructor. Is used for identification.
      */
-    short getInstanceID();
+    short getUUID();
 
     /**
      * Resets the registry to its initial state.

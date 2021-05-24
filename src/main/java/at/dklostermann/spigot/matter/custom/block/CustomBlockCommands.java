@@ -1,5 +1,7 @@
 package at.dklostermann.spigot.matter.custom.block;
 
+import at.dklostermann.spigot.matter.custom.CustomGameObjectCommand;
+import at.dklostermann.spigot.matter.registry.IRegistry;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -9,18 +11,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 @CommandAlias("matter")
-public class CustomBlockCommands extends BaseCommand
+public class CustomBlockCommands extends CustomGameObjectCommand<CustomBlock>
 {
-    private CustomBlockRegistry customBlockRegistry;
-
-    public CustomBlockCommands(CustomBlockRegistry customBlockRegistry)
+    public CustomBlockCommands(IRegistry<CustomBlock> registry)
     {
-        this.customBlockRegistry = customBlockRegistry;
-    }
-
-    public void setCustomBlockRegistry(CustomBlockRegistry customBlockRegistry)
-    {
-        this.customBlockRegistry = customBlockRegistry;
+        super(registry);
     }
 
     @Subcommand("setblock")
@@ -28,7 +23,7 @@ public class CustomBlockCommands extends BaseCommand
     @CommandCompletion("@custom_blocks")
     public void setBlock(Player player, String name, int x, int y, int z)
     {
-        CustomBlock customBlock = this.customBlockRegistry.get(name);
+        CustomBlock customBlock = this.getRegistry().get(name);
         if (customBlock == null)
         {
             player.sendMessage(String.format("§cUnknown custom block §b%s", name));

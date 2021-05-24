@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -22,23 +23,18 @@ public class CustomItemDurability extends CustomItem
 
     private int durability = 64;
 
-    public CustomItemDurability(@Nonnull String registryName, @Nonnull ConfigurationSection data) throws CustomItemParseException
+    public CustomItemDurability(@NotNull ConfigurationSection config, @NotNull String registryName, int registryIndex, short registryUUID)
     {
-        super(registryName, data);
+        super(config, registryName, registryIndex, registryUUID);
 
         try
         {
-            this.durability = Math.max(1, data.getInt("durability"));
+            this.durability = Math.max(1, config.getInt("durability"));
         }
         catch (Exception exception)
         {
             throw new CustomItemParseException(exception);
         }
-    }
-
-    public CustomItemDurability(@Nonnull String registryName)
-    {
-        super(registryName);
     }
 
     public int getDurability()
