@@ -1,7 +1,7 @@
-package at.dklostermann.spigot.matter.gui;
+package at.dklostermann.spigot.matter.custom.gui;
 
-import at.dklostermann.spigot.matter.gui.button.IGuiButton;
-import at.dklostermann.spigot.matter.gui.inventory.CustomInventory;
+import at.dklostermann.spigot.matter.custom.gui.button.IGuiButton;
+import at.dklostermann.spigot.matter.custom.gui.inventory.CustomInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

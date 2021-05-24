@@ -1,8 +1,8 @@
 package at.dklostermann.spigot.matter;
 
-import at.dklostermann.spigot.matter.gui.ExpressionInventoryGui;
-import at.dklostermann.spigot.matter.gui.button.GuiLambdaButton;
-import at.dklostermann.spigot.matter.gui.inventory.CustomInventory;
+import at.dklostermann.spigot.matter.custom.gui.ExpressionInventoryGui;
+import at.dklostermann.spigot.matter.custom.gui.button.GuiLambdaButton;
+import at.dklostermann.spigot.matter.custom.gui.inventory.CustomInventory;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;

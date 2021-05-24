@@ -1,6 +1,6 @@
-package at.dklostermann.spigot.matter.gui;
+package at.dklostermann.spigot.matter.custom.gui;
 
-import at.dklostermann.spigot.matter.gui.inventory.MatterInventory;
+import at.dklostermann.spigot.matter.custom.gui.inventory.MatterInventory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

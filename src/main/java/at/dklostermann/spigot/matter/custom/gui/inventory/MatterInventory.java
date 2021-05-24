@@ -1,4 +1,4 @@
-package at.dklostermann.spigot.matter.gui.inventory;
+package at.dklostermann.spigot.matter.custom.gui.inventory;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
