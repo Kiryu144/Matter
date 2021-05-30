@@ -8,12 +8,8 @@ import at.dklostermann.spigot.matter.config.JsonConfiguration;
 import at.dklostermann.spigot.matter.custom.CustomGameObject;
 import at.dklostermann.spigot.matter.custom.CustomGameObjects;
 import at.dklostermann.spigot.matter.custom.block.*;
-import at.dklostermann.spigot.matter.custom.gui.font.NegativeSpacesFont;
 import at.dklostermann.spigot.matter.custom.item.*;
-import at.dklostermann.spigot.matter.custom.gui.InventoryGui;
-import at.dklostermann.spigot.matter.custom.gui.InventoryGuiListener;
-import at.dklostermann.spigot.matter.custom.gui.button.GuiGiveItemButton;
-import at.dklostermann.spigot.matter.custom.gui.inventory.BukkitInventory;
+import at.dklostermann.spigot.matter.inventory.SmartInventoryManager;
 import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -40,8 +36,7 @@ public class Matter extends JavaPlugin
     private CustomGameObjects<CustomItem> customItems;
     private CustomGameObjects<CustomBlock> customBlocks;
 
-    private InventoryGuiListener inventoryGuiListener;
-    private InventoryGui customItemGUI;
+    private SmartInventoryManager smartInventoryManager;
 
     // Library
     private PaperCommandManager commandManager = null;
@@ -70,7 +65,7 @@ public class Matter extends JavaPlugin
         this.blockDataIndexerRegistry.register(new TripwireBlockDataIndexer());
         this.blockDataIndexerRegistry.register(new NoteBlockDataIndexer());
 
-        this.inventoryGuiListener = new InventoryGuiListener(this);
+        this.smartInventoryManager = new SmartInventoryManager(this);
 
         this.reload(this.getServer().getConsoleSender());
     }
@@ -139,14 +134,6 @@ public class Matter extends JavaPlugin
         this.reloadGameObject(this.customBlocks, commandSender);
 
         Bukkit.getOnlinePlayers().forEach(player -> this.getCustomItemRegistry().fixInventory(player.getInventory()));
-
-        this.customItemGUI = new InventoryGui(new BukkitInventory(9*6, "Custom Item GUI"));
-        int slot = 0;
-        for (CustomItem customItem : this.getCustomItemRegistry().values())
-        {
-            this.customItemGUI.setButton(slot++, new GuiGiveItemButton(customItem.createItemStack()));
-        }
-        this.inventoryGuiListener.register(this.customItemGUI);
     }
 
     @Nonnull
@@ -168,14 +155,8 @@ public class Matter extends JavaPlugin
     }
 
     @Nonnull
-    public InventoryGui getCustomItemGUI()
+    public SmartInventoryManager getSmartInventoryManager()
     {
-        return this.customItemGUI;
-    }
-
-    @Nonnull
-    public InventoryGuiListener getInventoryGuiListener()
-    {
-        return this.inventoryGuiListener;
+        return this.smartInventoryManager;
     }
 }

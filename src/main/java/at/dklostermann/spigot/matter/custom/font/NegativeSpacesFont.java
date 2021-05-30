@@ -1,7 +1,4 @@
-package at.dklostermann.spigot.matter.custom.gui.font;
-
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
+package at.dklostermann.spigot.matter.custom.font;
 
 public class NegativeSpacesFont
 {
