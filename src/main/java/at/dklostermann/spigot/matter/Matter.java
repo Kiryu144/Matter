@@ -26,7 +26,8 @@ public class Matter extends JavaPlugin
 {
     private static Matter instance;
 
-    private MatterLogger matterLogger;
+    private final MatterLogger matterLogger = new MatterLogger(this);
+
     private PaperCommandManager commandManager;
     private MaterialBlockDataIndexerRegistry blockDataIndexerRegistry;
     private SmartInventoryManager smartInventoryManager;
@@ -49,7 +50,6 @@ public class Matter extends JavaPlugin
     public void onEnable()
     {
         // Constructors
-        this.matterLogger = new MatterLogger(this);
         this.commandManager = new PaperCommandManager(this);
         this.blockDataIndexerRegistry = new MaterialBlockDataIndexerRegistry();
         this.smartInventoryManager = new SmartInventoryManager(this);
@@ -66,6 +66,11 @@ public class Matter extends JavaPlugin
         this.blockDataIndexerRegistry.register(new MultipleFacingBlockDataIndexer());
         this.blockDataIndexerRegistry.register(new TripwireBlockDataIndexer());
         this.blockDataIndexerRegistry.register(new NoteBlockDataIndexer());
+
+        this.commandManager.getCommandCompletions().registerAsyncCompletion("custom_items", context -> this.customItemRegistry.names());
+        this.commandManager.getCommandCompletions().registerAsyncCompletion("custom_blocks", context -> this.customBlockRegistry.names());
+        this.commandManager.registerCommand(this.customItemCommands);
+        this.commandManager.registerCommand(this.customBlockCommands);
     }
 
     @Override
@@ -98,5 +103,15 @@ public class Matter extends JavaPlugin
     public static Matter getInstance()
     {
         return instance;
+    }
+
+    public CustomItemRegistry getCustomItemRegistry()
+    {
+        return this.customItemRegistry;
+    }
+
+    public CustomBlockRegistry getCustomBlockRegistry()
+    {
+        return this.customBlockRegistry;
     }
 }

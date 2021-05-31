@@ -6,6 +6,7 @@ import at.dklostermann.spigot.matter.custom.item.interaction.CustomItemInteracti
 import at.dklostermann.spigot.matter.registry.IRegistry;
 import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import at.dklostermann.spigot.matter.registry.RegistryValue;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -70,6 +71,11 @@ public class CustomItem extends RegistryValue
     private Integer customModelData = null;
 
     /**
+     * Used as displayname
+     */
+    private String name;
+
+    /**
      * Lore or Description of an item.
      */
     protected List<String> lore = new ArrayList<>();
@@ -79,22 +85,24 @@ public class CustomItem extends RegistryValue
         super(registry, registryName, registryIndex);
     }
 
-    public CustomItem setMaterial(@NotNull Material material)
+    public void setMaterial(@NotNull Material material)
     {
         this.material = material;
-        return this;
     }
 
-    public CustomItem setCustomModelData(@Nullable Integer customModelData)
+    public void setCustomModelData(@Nullable Integer customModelData)
     {
         this.customModelData = customModelData;
-        return this;
     }
 
-    public CustomItem setLore(@Nullable List<String> lore)
+    public void setLore(@Nullable List<String> lore)
     {
         this.lore = lore;
-        return this;
+    }
+
+    public void setName(@NotNull String name)
+    {
+        this.name = name;
     }
 
     public void onInteract(@NotNull CustomItemInteraction interaction)
@@ -135,9 +143,10 @@ public class CustomItem extends RegistryValue
         PersistentDataContainer persistentDataContainer = meta.getPersistentDataContainer();
         this.setInitialData(persistentDataContainer);
 
-        meta.setLocalizedName(String.format("matter.customitem.%s.name", this.getRegistryName()));
+        // meta.setLocalizedName(String.format("matter.customitem.%s.name", this.getRegistryName()));
         meta.setCustomModelData(this.customModelData);
         meta.setLore(this.lore);
+        meta.setDisplayName(ChatColor.RESET + this.name);
     }
 
     /**
