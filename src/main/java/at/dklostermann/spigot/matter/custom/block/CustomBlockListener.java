@@ -49,6 +49,12 @@ public class CustomBlockListener implements Listener
             return;
         }
 
+        if (!customBlock.onPlayerBreak(event.getPlayer(), null))
+        {
+            event.setCancelled(true);
+            return;
+        }
+
         if (customBlock.getBlockRepresentation() instanceof ItemFrameBlockRepresentation)
         {
             this.customBlockRegistry.getLastCorrelatingEntity().remove();
@@ -59,6 +65,7 @@ public class CustomBlockListener implements Listener
             event.setDropItems(false);
             event.setExpToDrop(0);
             Location dropLocation = event.getBlock().getLocation().add(0.5, 0.5, 0.5);
+            customBlock.getDrops().forEach(itemStack -> dropLocation.getWorld().dropItemNaturally(dropLocation, itemStack));
         }
     }
 

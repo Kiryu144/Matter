@@ -9,8 +9,13 @@ import at.dklostermann.spigot.matter.registry.RegistryValue;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CustomBlock extends RegistryValue
 {
@@ -31,6 +36,24 @@ public class CustomBlock extends RegistryValue
     public void place(@NotNull Location location, @Nullable BlockFace blockFace, @Nullable Player player)
     {
         this.blockRepresentation.place(this, location, blockFace, player);
+    }
+
+    public boolean onPlayerBreak(@NotNull Player player, @Nullable BlockFace blockFace)
+    {
+        return true;
+    }
+
+    @NotNull
+    public List<ItemStack> getDrops()
+    {
+        if (this.customItem != null)
+        {
+            return Collections.singletonList(this.customItem.createItemStack());
+        }
+        else
+        {
+            return new ArrayList<>();
+        }
     }
 
     @NotNull

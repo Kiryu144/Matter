@@ -114,4 +114,9 @@ public class Matter extends JavaPlugin
     {
         return this.customBlockRegistry;
     }
+
+    public SmartInventoryManager getSmartInventoryManager()
+    {
+        return this.smartInventoryManager;
+    }
 }
