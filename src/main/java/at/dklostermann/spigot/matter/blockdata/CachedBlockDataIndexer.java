@@ -1,8 +1,8 @@
 package at.dklostermann.spigot.matter.blockdata;
 
 import org.bukkit.block.data.BlockData;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.lang.reflect.Array;
 
 /**
@@ -21,10 +21,10 @@ public abstract class CachedBlockDataIndexer implements IBlockDataIndexer
      * @param index Index to reconstruct.
      * @return Am valid blockdata from the given index.
      */
-    @Nonnull
+    @NotNull
     abstract BlockData createForIndex(int index);
 
-    @Nonnull
+    @NotNull
     @Override
     public BlockData fromIndex(int index)
     {

@@ -1,10 +1,13 @@
 package at.dklostermann.spigot.matter.registry;
 
 import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -46,19 +49,19 @@ public class Registry<V extends IRegistryValue> implements IRegistry<V>
         return value;
     }
 
-    protected void postRegister(@Nonnull V value)
+    protected void postRegister(@NotNull V value)
     {
 
     }
 
-    public void onRegister(@Nonnull Consumer<V> callback)
+    public void onRegister(@NotNull Consumer<V> callback)
     {
         this.onRegisterCallbacks.add(callback);
     }
 
     @Override
     @Nullable
-    public V get(@Nonnull String name)
+    public V get(@NotNull String name)
     {
         return this.names.get(name);
     }
@@ -76,14 +79,14 @@ public class Registry<V extends IRegistryValue> implements IRegistry<V>
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public List<V> values()
     {
         return this.valueList;
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public List<String> names()
     {
         return this.nameList;

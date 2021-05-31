@@ -3,13 +3,11 @@ package at.dklostermann.spigot.matter.config;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.json.simple.JSONArray;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +23,7 @@ public class JsonConfiguration extends FileConfiguration
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public String saveToString()
     {
         JSONObject jsonObject = new JSONObject(this.map);
@@ -33,7 +31,7 @@ public class JsonConfiguration extends FileConfiguration
     }
 
     @Override
-    public void loadFromString(@Nonnull String s) throws InvalidConfigurationException
+    public void loadFromString(@NotNull String s) throws InvalidConfigurationException
     {
         Map<? extends String, ?> input = null;
         try
@@ -66,7 +64,7 @@ public class JsonConfiguration extends FileConfiguration
      * @param input Input map, does not get altered.
      * @param section Current section
      */
-    private void convertMapsToSections(@Nonnull Map<? extends String, ?> input, @Nonnull ConfigurationSection section)
+    private void convertMapsToSections(@NotNull Map<? extends String, ?> input, @NotNull ConfigurationSection section)
     {
         for (Map.Entry<? extends String, ?> item : input.entrySet())
         {
@@ -85,7 +83,7 @@ public class JsonConfiguration extends FileConfiguration
     }
 
     @Override
-    @Nonnull
+    @NotNull
     protected String buildHeader()
     {
         // Json has no comments. Therefore no header.

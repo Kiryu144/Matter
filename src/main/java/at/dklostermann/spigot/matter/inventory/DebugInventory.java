@@ -4,14 +4,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-
 public class DebugInventory extends SmartInventory
 {
     private int ticksAlive = 0;
     private int closingAttempts = 0;
 
-    public DebugInventory(@Nonnull Player viewer)
+    public DebugInventory(@NotNull Player viewer)
     {
         super(viewer, 3);
     }

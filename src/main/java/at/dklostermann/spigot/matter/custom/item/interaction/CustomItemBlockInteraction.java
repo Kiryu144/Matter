@@ -6,9 +6,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class CustomItemBlockInteraction
 {
@@ -33,25 +32,25 @@ public class CustomItemBlockInteraction
         this.blockFace = blockFace;
     }
 
-    @Nonnull
+    @NotNull
     public InteractionType getInteractionType()
     {
         return this.interactionType;
     }
 
-    @Nonnull
+    @NotNull
     public EquipmentSlot getHand()
     {
         return this.hand;
     }
 
-    @Nonnull
+    @NotNull
     public ItemStack getItemStack()
     {
         return this.itemStack;
     }
 
-    @Nonnull
+    @NotNull
     public Block getBlock()
     {
         return this.block;
@@ -63,7 +62,7 @@ public class CustomItemBlockInteraction
         return this.blockFace;
     }
 
-    @Nonnull
+    @NotNull
     public CustomItem getCustomItem()
     {
         return this.customItem;

@@ -1,6 +1,6 @@
 package at.dklostermann.spigot.matter.predicate;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Interface for a generic predicate taking in a specific type.

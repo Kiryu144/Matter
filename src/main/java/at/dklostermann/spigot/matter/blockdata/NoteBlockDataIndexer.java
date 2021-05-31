@@ -5,8 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.NoteBlock;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class NoteBlockDataIndexer extends CachedBlockDataIndexer
 {
@@ -26,7 +25,7 @@ public class NoteBlockDataIndexer extends CachedBlockDataIndexer
     }
 
     @Override
-    public int getIndex(@Nonnull BlockData blockData)
+    public int getIndex(@NotNull BlockData blockData)
     {
         NoteBlock noteBlock = (NoteBlock) blockData;
         int index = 0;
@@ -44,21 +43,21 @@ public class NoteBlockDataIndexer extends CachedBlockDataIndexer
         return 800;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Class<? extends BlockData> getBlockDataClass()
     {
         return NoteBlock.class;
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public IBlockDataIndexer createNew(@Nonnull Material material)
+    public IBlockDataIndexer createNew(@NotNull Material material)
     {
         return new NoteBlockDataIndexer(material);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     BlockData createForIndex(int index)
     {

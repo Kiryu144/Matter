@@ -2,9 +2,9 @@ package at.dklostermann.spigot.matter.reflection;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 
 public class ItemStackReflector
@@ -30,7 +30,7 @@ public class ItemStackReflector
     }
 
     @Nullable
-    public static ItemMeta GetMeta(@Nonnull ItemStack itemStack)
+    public static ItemMeta GetMeta(@NotNull ItemStack itemStack)
     {
         try
         {
@@ -43,7 +43,7 @@ public class ItemStackReflector
         }
     }
 
-    public static void SetMeta(@Nonnull ItemStack itemStack, ItemMeta meta)
+    public static void SetMeta(@NotNull ItemStack itemStack, ItemMeta meta)
     {
         try
         {

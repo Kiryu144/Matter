@@ -1,6 +1,5 @@
 package at.dklostermann.spigot.matter.custom.item;
 
-import at.dklostermann.spigot.matter.registry.IRegistry;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;

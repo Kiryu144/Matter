@@ -1,6 +1,6 @@
 package at.dklostermann.spigot.matter.registry;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public interface IRegistryValue
 {
@@ -11,7 +11,7 @@ public interface IRegistryValue
      *
      * @return Unique identifier or null if not ready to be registered.
      */
-    @Nonnull
+    @NotNull
     String getRegistryName();
 
     /**

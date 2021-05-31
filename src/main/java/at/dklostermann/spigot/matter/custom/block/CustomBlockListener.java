@@ -21,15 +21,14 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class CustomBlockListener implements Listener
 {
     private final CustomBlockRegistry customBlockRegistry;
     private final CustomItemRegistry customItemRegistry;
 
-    public CustomBlockListener(@Nonnull Plugin plugin, @Nonnull CustomBlockRegistry customBlockRegistry, @Nonnull CustomItemRegistry customItemRegistry)
+    public CustomBlockListener(@NotNull Plugin plugin, @NotNull CustomBlockRegistry customBlockRegistry, @NotNull CustomItemRegistry customItemRegistry)
     {
         this.customBlockRegistry = customBlockRegistry;
         this.customItemRegistry = customItemRegistry;

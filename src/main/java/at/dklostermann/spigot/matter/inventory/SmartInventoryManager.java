@@ -3,7 +3,6 @@ package at.dklostermann.spigot.matter.inventory;
 import at.dklostermann.spigot.matter.Matter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,8 +11,8 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,12 +20,12 @@ public class SmartInventoryManager implements Listener
 {
     private final Map<Inventory, SmartInventory> inventorySmartInventoryMap = new HashMap<>();
 
-    public SmartInventoryManager(@Nonnull Plugin plugin)
+    public SmartInventoryManager(@NotNull Plugin plugin)
     {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    public void open(@Nonnull SmartInventory smartInventory)
+    public void open(@NotNull SmartInventory smartInventory)
     {
         this.inventorySmartInventoryMap.remove(smartInventory.getViewer().getOpenInventory().getTopInventory());
         this.inventorySmartInventoryMap.put(smartInventory.asSpigot(), smartInventory);

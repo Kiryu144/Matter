@@ -6,8 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class MultipleFacingBlockDataIndexer extends CachedBlockDataIndexer
         this.material = null;
     }
 
-    private MultipleFacingBlockDataIndexer(@Nonnull Material material)
+    private MultipleFacingBlockDataIndexer(@NotNull Material material)
     {
         this.material = material;
         Validate.isTrue(MaterialReflector.GetBlockData(material) == this.getBlockDataClass(),
@@ -49,7 +49,7 @@ public class MultipleFacingBlockDataIndexer extends CachedBlockDataIndexer
     }
 
     @Override
-    public int getIndex(@Nonnull BlockData blockData)
+    public int getIndex(@NotNull BlockData blockData)
     {
         MultipleFacing multipleFacing = (MultipleFacing) blockData;
         int index = 0;
@@ -66,21 +66,21 @@ public class MultipleFacingBlockDataIndexer extends CachedBlockDataIndexer
         return (int) Math.pow(2, this.usedBlockFaces.size());
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Class<? extends BlockData> getBlockDataClass()
     {
         return MultipleFacing.class;
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public IBlockDataIndexer createNew(@Nonnull Material material)
+    public IBlockDataIndexer createNew(@NotNull Material material)
     {
         return new MultipleFacingBlockDataIndexer(material);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     BlockData createForIndex(int index)
     {

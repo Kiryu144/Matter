@@ -3,9 +3,9 @@ package at.dklostermann.spigot.matter.predicate;
 
 import at.dklostermann.spigot.matter.config.IConfigParseable;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 
 /**
@@ -28,7 +28,7 @@ public abstract class OperatorPredicate<Target> implements IPredicate<Target>, I
         return this.target;
     }
 
-    @Nonnull
+    @NotNull
     public Operator getOperator()
     {
         return this.operator;

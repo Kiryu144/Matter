@@ -8,8 +8,6 @@ import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-
 public class CustomItemBlock extends CustomItem
 {
     private CustomBlock customBlock;
@@ -19,13 +17,13 @@ public class CustomItemBlock extends CustomItem
         super(registry, registryName, registryIndex);
     }
 
-    public void setCustomBlock(@Nonnull CustomBlock customBlock)
+    public void setCustomBlock(@NotNull CustomBlock customBlock)
     {
         this.customBlock = customBlock;
     }
 
     @Override
-    public void onBlockChange(@Nonnull CustomItemBlockInteraction interaction)
+    public void onBlockChange(@NotNull CustomItemBlockInteraction interaction)
     {
         if (this.customBlock == null)
         {

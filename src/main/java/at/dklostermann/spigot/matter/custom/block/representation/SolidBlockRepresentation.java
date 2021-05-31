@@ -10,9 +10,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class SolidBlockRepresentation implements IBlockRepresentation
 {
@@ -21,7 +19,7 @@ public class SolidBlockRepresentation implements IBlockRepresentation
     private final BlockData blockData;
     private final IBlockDataIndexer blockDataIndexer;
 
-    public SolidBlockRepresentation(@NotNull MaterialBlockDataIndexerRegistry blockDataIndexerRegistry, @Nonnull Material material, int variant)
+    public SolidBlockRepresentation(@NotNull MaterialBlockDataIndexerRegistry blockDataIndexerRegistry, @NotNull Material material, int variant)
     {
         this.material = material;
         this.variant = variant;
@@ -34,7 +32,7 @@ public class SolidBlockRepresentation implements IBlockRepresentation
     }
 
     @Override
-    public void place(@Nonnull CustomBlock customBlock, @Nonnull Location location, @javax.annotation.Nullable BlockFace blockFace, @Nullable Player player)
+    public void place(@NotNull CustomBlock customBlock, @NotNull Location location, @javax.annotation.Nullable BlockFace blockFace, @Nullable Player player)
     {
         location.getBlock().setBlockData(this.blockData, false);
     }

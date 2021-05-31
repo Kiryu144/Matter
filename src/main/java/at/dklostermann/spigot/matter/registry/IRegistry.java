@@ -1,7 +1,8 @@
 package at.dklostermann.spigot.matter.registry;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 import java.util.function.Function;
 
@@ -27,7 +28,7 @@ public interface IRegistry<V extends IRegistryValue>
      * @return The value if found, otherwise null.
      */
     @Nullable
-    V get(@Nonnull String name);
+    V get(@NotNull String name);
 
     /**
      * Fetches a value based on its index. The index is choosen by the IRegistry implementation and
@@ -42,13 +43,13 @@ public interface IRegistry<V extends IRegistryValue>
     /**
      * @return List of all values in order of registering them.
      */
-    @Nonnull
+    @NotNull
     List<V> values();
 
     /**
      * @return List of all names in order of registering them.
      */
-    @Nonnull
+    @NotNull
     List<String> names();
 
     /**

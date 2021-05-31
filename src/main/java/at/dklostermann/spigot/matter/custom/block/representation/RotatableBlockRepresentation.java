@@ -4,11 +4,10 @@ import at.dklostermann.spigot.matter.custom.block.CustomBlock;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class RotatableBlockRepresentation implements IBlockRepresentation
             };
     private final List<IBlockRepresentation> blockRepresentations = new ArrayList<>();
 
-    public RotatableBlockRepresentation(@Nonnull List<IBlockRepresentation> blockRepresentations)
+    public RotatableBlockRepresentation(@NotNull List<IBlockRepresentation> blockRepresentations)
     {
         this.blockRepresentations.addAll(blockRepresentations);
         Validate.isTrue(this.blockRepresentations.size() > 0);
@@ -39,7 +38,7 @@ public class RotatableBlockRepresentation implements IBlockRepresentation
     }
 
     @Override
-    public void place(@Nonnull CustomBlock customBlock, @Nonnull Location location, @Nullable BlockFace blockFace, @Nullable Player player)
+    public void place(@NotNull CustomBlock customBlock, @NotNull Location location, @Nullable BlockFace blockFace, @Nullable Player player)
     {
         if (player != null && this.blockRepresentations.size() <= 4)
         {

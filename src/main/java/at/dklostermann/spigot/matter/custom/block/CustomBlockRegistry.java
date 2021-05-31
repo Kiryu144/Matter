@@ -14,9 +14,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 
 /**
@@ -28,7 +27,7 @@ public class CustomBlockRegistry extends Registry<CustomBlock>
     private final MaterialBlockDataIndexerRegistry materialBlockDataIndexerRegistry;
     private Entity lastCorrelatingEntity = null; // TODO: This is very hacky, please find a better way soon.
 
-    public CustomBlockRegistry(@Nonnull MaterialBlockDataIndexerRegistry materialBlockDataIndexerRegistry)
+    public CustomBlockRegistry(@NotNull MaterialBlockDataIndexerRegistry materialBlockDataIndexerRegistry)
     {
         this.materialBlockDataIndexerRegistry = materialBlockDataIndexerRegistry;
     }
@@ -40,7 +39,7 @@ public class CustomBlockRegistry extends Registry<CustomBlock>
         this.register(blockRepresentation, value);
     }
 
-    private void register(@Nonnull IBlockRepresentation blockRepresentation, @Nonnull CustomBlock customBlock)
+    private void register(@NotNull IBlockRepresentation blockRepresentation, @NotNull CustomBlock customBlock)
     {
         if (blockRepresentation instanceof SolidBlockRepresentation)
         {
@@ -58,7 +57,7 @@ public class CustomBlockRegistry extends Registry<CustomBlock>
         }
     }
 
-    private void register(@Nonnull Material material, @Nonnull IBlockDataIndexer blockDataIndexer, int variant, @Nonnull CustomBlock customBlock)
+    private void register(@NotNull Material material, @NotNull IBlockDataIndexer blockDataIndexer, int variant, @NotNull CustomBlock customBlock)
     {
         CustomBlock[] perBlockData = this.blockReferences[material.ordinal()];
         if (perBlockData == null)
@@ -70,7 +69,7 @@ public class CustomBlockRegistry extends Registry<CustomBlock>
     }
 
     @Nullable
-    public CustomBlock getCustomBlock(@Nonnull Material material, int blockDataID)
+    public CustomBlock getCustomBlock(@NotNull Material material, int blockDataID)
     {
         CustomBlock[] perBlockData = this.blockReferences[material.ordinal()];
         return perBlockData != null ? perBlockData[blockDataID] : null;
@@ -119,7 +118,7 @@ public class CustomBlockRegistry extends Registry<CustomBlock>
     }
 
     @Nullable
-    public CustomBlock getCustomBlock(@Nonnull BlockData blockData)
+    public CustomBlock getCustomBlock(@NotNull BlockData blockData)
     {
         IBlockDataIndexer indexer = this.materialBlockDataIndexerRegistry.getIndexer(blockData.getMaterial());
         if (indexer == null)

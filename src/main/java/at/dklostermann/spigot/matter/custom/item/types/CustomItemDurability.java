@@ -12,8 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-
 public class CustomItemDurability extends CustomItem
 {
     /**
@@ -38,7 +36,7 @@ public class CustomItemDurability extends CustomItem
         this.durability = durability;
     }
 
-    protected void updateItemStackDamageDisplay(@Nonnull ItemMeta itemMeta, int damage, int vanillaDurability)
+    protected void updateItemStackDamageDisplay(@NotNull ItemMeta itemMeta, int damage, int vanillaDurability)
     {
         if (itemMeta instanceof Damageable)
         {
@@ -48,7 +46,7 @@ public class CustomItemDurability extends CustomItem
         }
     }
 
-    public void setItemStackDamage(@Nonnull ItemStack itemStack, int damage)
+    public void setItemStackDamage(@NotNull ItemStack itemStack, int damage)
     {
         ItemMeta meta = itemStack.getItemMeta();
         meta.getPersistentDataContainer().set(ITEM_DURABILITY_KEY, PersistentDataType.INTEGER, damage);
@@ -56,7 +54,7 @@ public class CustomItemDurability extends CustomItem
         itemStack.setItemMeta(meta);
     }
 
-    public int getItemStackDamage(@Nonnull ItemStack itemStack)
+    public int getItemStackDamage(@NotNull ItemStack itemStack)
     {
         ItemMeta meta = itemStack.getItemMeta();
         Validate.notNull(meta);

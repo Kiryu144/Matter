@@ -19,7 +19,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -75,8 +74,8 @@ public class Matter extends JavaPlugin
         return this.matterLogger;
     }
 
-    @Nonnull
-    public FileConfiguration loadConfiguration(@Nonnull String filename) throws IOException, InvalidConfigurationException
+    @NotNull
+    public FileConfiguration loadConfiguration(@NotNull String filename) throws IOException, InvalidConfigurationException
     {
         FileConfiguration configuration = null;
         if (filename.endsWith(".yml") || filename.endsWith(".yaml"))

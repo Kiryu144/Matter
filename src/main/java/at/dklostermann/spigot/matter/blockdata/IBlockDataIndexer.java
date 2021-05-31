@@ -2,8 +2,7 @@ package at.dklostermann.spigot.matter.blockdata;
 
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is a utility class, used to convert blockstates to integers, and vise versa.
@@ -17,7 +16,7 @@ public interface IBlockDataIndexer
      * @param blockData Converting existing blockdata to an integer
      * @return The integer index.
      */
-    int getIndex(@Nonnull BlockData blockData);
+    int getIndex(@NotNull BlockData blockData);
 
     /**
      * Reconstructs blockdata from a given index. This function is O(0) the second time its called. (Caching)
@@ -26,7 +25,7 @@ public interface IBlockDataIndexer
      * @param index Index to convert to blockdata. Must be between (0, max()]
      * @return Reconstructed Blockdata.
      */
-    @Nonnull
+    @NotNull
     BlockData fromIndex(int index);
 
     /**
@@ -37,7 +36,7 @@ public interface IBlockDataIndexer
     /**
      * @return Returns the blockdata type its able to convert.
      */
-    @Nonnull
+    @NotNull
     Class<? extends BlockData> getBlockDataClass();
 
     /**
@@ -46,6 +45,6 @@ public interface IBlockDataIndexer
      * @param material Material to use
      * @return Returns a new indexer for the same type.
      */
-    @Nonnull
-    IBlockDataIndexer createNew(@Nonnull Material material);
+    @NotNull
+    IBlockDataIndexer createNew(@NotNull Material material);
 }

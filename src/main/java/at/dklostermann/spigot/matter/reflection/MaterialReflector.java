@@ -3,9 +3,9 @@ package at.dklostermann.spigot.matter.reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 
 public class MaterialReflector
@@ -16,7 +16,7 @@ public class MaterialReflector
      * @note We cant use Material#createBlockData(), as it returns the vanilla equivalent to the spigot wrapper.
      */
     @Nullable
-    public static Class<? extends BlockData> GetBlockData(@Nonnull Material material)
+    public static Class<? extends BlockData> GetBlockData(@NotNull Material material)
     {
 
         if (blockDataPerMaterial == null)

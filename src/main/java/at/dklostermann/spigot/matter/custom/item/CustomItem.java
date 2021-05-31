@@ -1,22 +1,20 @@
 package at.dklostermann.spigot.matter.custom.item;
 
 import at.dklostermann.spigot.matter.Matter;
+import at.dklostermann.spigot.matter.custom.item.interaction.CustomItemBlockInteraction;
+import at.dklostermann.spigot.matter.custom.item.interaction.CustomItemInteraction;
 import at.dklostermann.spigot.matter.registry.IRegistry;
 import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import at.dklostermann.spigot.matter.registry.RegistryValue;
-import at.dklostermann.spigot.matter.custom.item.interaction.CustomItemBlockInteraction;
-import at.dklostermann.spigot.matter.custom.item.interaction.CustomItemInteraction;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +79,7 @@ public class CustomItem extends RegistryValue
         super(registry, registryName, registryIndex);
     }
 
-    public CustomItem setMaterial(@Nonnull Material material)
+    public CustomItem setMaterial(@NotNull Material material)
     {
         this.material = material;
         return this;
@@ -99,12 +97,12 @@ public class CustomItem extends RegistryValue
         return this;
     }
 
-    public void onInteract(@Nonnull CustomItemInteraction interaction)
+    public void onInteract(@NotNull CustomItemInteraction interaction)
     {
 
     }
 
-    public void onBlockChange(@Nonnull CustomItemBlockInteraction interaction)
+    public void onBlockChange(@NotNull CustomItemBlockInteraction interaction)
     {
 
     }
@@ -116,7 +114,7 @@ public class CustomItem extends RegistryValue
      *
      * @return Newly created ItemStack.
      */
-    @Nonnull
+    @NotNull
     public ItemStack createItemStack()
     {
         ItemStack itemStack = new ItemStack(this.material);
@@ -132,7 +130,7 @@ public class CustomItem extends RegistryValue
      *
      * @param meta ItemMeta of the item to be created.
      */
-    protected void setInitialMeta(@Nonnull ItemMeta meta)
+    protected void setInitialMeta(@NotNull ItemMeta meta)
     {
         PersistentDataContainer persistentDataContainer = meta.getPersistentDataContainer();
         this.setInitialData(persistentDataContainer);
@@ -149,7 +147,7 @@ public class CustomItem extends RegistryValue
      *
      * @param persistentDataContainer DataContainer of the item to be created.
      */
-    protected void setInitialData(@Nonnull PersistentDataContainer persistentDataContainer)
+    protected void setInitialData(@NotNull PersistentDataContainer persistentDataContainer)
     {
         persistentDataContainer.set(ITEM_NAME_KEY, PersistentDataType.STRING, this.getRegistryName());
         persistentDataContainer.set(ITEM_REG_INDEX, PersistentDataType.INTEGER, Combine((short) this.getRegistryIndex(), this.getRegistryUUID()));

@@ -7,9 +7,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class CustomItemInteraction
 {
@@ -46,19 +45,19 @@ public class CustomItemInteraction
         this.entity = null;
     }
 
-    @Nonnull
+    @NotNull
     public CustomItem getCustomItem()
     {
         return this.customItem;
     }
 
-    @Nonnull
+    @NotNull
     public LivingEntity getHolder()
     {
         return this.holder;
     }
 
-    @Nonnull
+    @NotNull
     public EquipmentSlot getHand()
     {
         return this.hand;
@@ -69,7 +68,7 @@ public class CustomItemInteraction
         return this.attack;
     }
 
-    @Nonnull
+    @NotNull
     public ItemStack getItemStack()
     {
         return this.itemStack;

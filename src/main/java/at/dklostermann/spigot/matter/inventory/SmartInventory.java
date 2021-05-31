@@ -5,21 +5,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class SmartInventory
 {
     private final Player viewer;
     private final Inventory inventory;
 
-    public SmartInventory(@Nonnull Player viewer, @Nonnull InventoryType inventoryType)
+    public SmartInventory(@NotNull Player viewer, @NotNull InventoryType inventoryType)
     {
         this.viewer = viewer;
         this.inventory = Bukkit.createInventory(null, inventoryType);
     }
 
-    public SmartInventory(@Nonnull Player viewer, int rows)
+    public SmartInventory(@NotNull Player viewer, int rows)
     {
         this.viewer = viewer;
         this.inventory = Bukkit.createInventory(null, rows*9);
@@ -35,7 +34,7 @@ public class SmartInventory
 
     }
 
-    public boolean onClick(int slot, @Nonnull ClickType clickType)
+    public boolean onClick(int slot, @NotNull ClickType clickType)
     {
         return false;
     }

@@ -3,8 +3,8 @@ package at.dklostermann.spigot.matter.predicate;
 import at.dklostermann.spigot.matter.reflection.PropertyExtractor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;

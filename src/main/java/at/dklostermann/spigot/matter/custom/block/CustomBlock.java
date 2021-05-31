@@ -1,18 +1,16 @@
 package at.dklostermann.spigot.matter.custom.block;
 
+import at.dklostermann.spigot.matter.custom.block.representation.IBlockRepresentation;
+import at.dklostermann.spigot.matter.custom.item.CustomItem;
 import at.dklostermann.spigot.matter.custom.item.types.CustomItemBlock;
 import at.dklostermann.spigot.matter.registry.IRegistry;
 import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import at.dklostermann.spigot.matter.registry.RegistryValue;
-import at.dklostermann.spigot.matter.custom.block.representation.IBlockRepresentation;
-import at.dklostermann.spigot.matter.custom.item.CustomItem;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class CustomBlock extends RegistryValue
 {
@@ -30,7 +28,7 @@ public class CustomBlock extends RegistryValue
         this.customItem = customItem;
     }
 
-    public void place(@Nonnull Location location, @Nullable BlockFace blockFace, @Nullable Player player)
+    public void place(@NotNull Location location, @Nullable BlockFace blockFace, @Nullable Player player)
     {
         this.blockRepresentation.place(this, location, blockFace, player);
     }

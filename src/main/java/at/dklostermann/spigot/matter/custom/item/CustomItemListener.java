@@ -19,14 +19,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class CustomItemListener implements Listener
 {
     private final CustomItemRegistry customItemRegistry;
 
-    public CustomItemListener(@Nonnull Plugin plugin, @Nonnull CustomItemRegistry customItemRegistry)
+    public CustomItemListener(@NotNull Plugin plugin, @NotNull CustomItemRegistry customItemRegistry)
     {
         this.customItemRegistry = customItemRegistry;
         Bukkit.getPluginManager().registerEvents(this, plugin);

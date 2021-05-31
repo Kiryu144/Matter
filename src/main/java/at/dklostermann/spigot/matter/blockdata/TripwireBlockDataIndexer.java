@@ -6,8 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Tripwire;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class TripwireBlockDataIndexer extends CachedBlockDataIndexer
 {
@@ -30,7 +29,7 @@ public class TripwireBlockDataIndexer extends CachedBlockDataIndexer
     }
 
     @Override
-    public int getIndex(@Nonnull BlockData blockData)
+    public int getIndex(@NotNull BlockData blockData)
     {
         Tripwire tripwire = (Tripwire) blockData;
         int index = 0;
@@ -50,22 +49,22 @@ public class TripwireBlockDataIndexer extends CachedBlockDataIndexer
         return (int) Math.pow(2, 7);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Class<? extends BlockData> getBlockDataClass()
     {
         return Tripwire.class;
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public IBlockDataIndexer createNew(@Nonnull Material material)
+    public IBlockDataIndexer createNew(@NotNull Material material)
     {
         return new TripwireBlockDataIndexer(material);
     }
 
     @Override
-    @Nonnull
+    @NotNull
     BlockData createForIndex(int index)
     {
         Tripwire tripwire = (Tripwire) this.material.createBlockData();

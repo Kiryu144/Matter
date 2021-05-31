@@ -1,7 +1,7 @@
 package at.dklostermann.spigot.matter.predicate;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This is a enum-implementation of the relational operators.
@@ -106,7 +106,7 @@ public enum Operator
     /**
      * @see Operator#check(Object, Object)
      */
-    boolean check(@Nonnull String left, @Nonnull String right)
+    boolean check(@NotNull String left, @NotNull String right)
     {
         return this.equals(EQUAL) == left.equalsIgnoreCase(right);
     }

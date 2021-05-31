@@ -1,12 +1,12 @@
 package at.dklostermann.spigot.matter.blockdata;
 
-import at.dklostermann.spigot.matter.reflection.MaterialReflector;
 import at.dklostermann.spigot.matter.Matter;
+import at.dklostermann.spigot.matter.reflection.MaterialReflector;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class MaterialBlockDataIndexerRegistry
     private final ArrayList<Material> knownMaterials = new ArrayList<>();
     private final List<String> knownMaterialNames = new ArrayList<>();
 
-    public void register(@Nonnull IBlockDataIndexer blockDataIndexer)
+    public void register(@NotNull IBlockDataIndexer blockDataIndexer)
     {
         for (Material material : Material.values())
         {
@@ -39,7 +39,7 @@ public class MaterialBlockDataIndexerRegistry
                 this.indexerMap[material.ordinal()] = blockDataIndexer.createNew(material);
                 this.knownMaterials.add(material);
                 this.knownMaterialNames.add(material.toString());
-                Matter.getInstance().getLogger().info(String.format("Registered BlockDataIndexer %s for %s", blockData.getSimpleName(), material.toString()));
+                Matter.getInstance().getLogger().info(String.format("Registered BlockDataIndexer %s for %s", blockData.getSimpleName(), material));
             }
         }
     }
@@ -49,7 +49,7 @@ public class MaterialBlockDataIndexerRegistry
         return this.knownMaterials;
     }
 
-    @Nonnull
+    @NotNull
     public List<String> getKnownMaterialNames()
     {
         return this.knownMaterialNames;
@@ -61,7 +61,7 @@ public class MaterialBlockDataIndexerRegistry
      * @return Returns indexer if found, else null.
      */
     @Nullable
-    public IBlockDataIndexer getIndexer(@Nonnull Material material)
+    public IBlockDataIndexer getIndexer(@NotNull Material material)
     {
         return this.indexerMap[material.ordinal()];
     }

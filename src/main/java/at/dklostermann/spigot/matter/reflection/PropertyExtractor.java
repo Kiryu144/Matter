@@ -1,7 +1,8 @@
 package at.dklostermann.spigot.matter.reflection;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class PropertyExtractor<T>
      * @param string Valid PascalCase string
      * @return All lowercase snake case string
      */
-    private static String PascalCaseToSnakeCase(@Nonnull String string)
+    private static String PascalCaseToSnakeCase(@NotNull String string)
     {
         StringBuilder ss = new StringBuilder();
         for (int i = 0; i < string.length(); ++i)
@@ -76,7 +77,7 @@ public class PropertyExtractor<T>
      * @return Returns method for given name. Null if not found.
      */
     @Nullable
-    public Method getMethod(@Nonnull String property)
+    public Method getMethod(@NotNull String property)
     {
         return this.properties.get(property);
     }
@@ -86,7 +87,7 @@ public class PropertyExtractor<T>
      * @return Value of the property.
      */
     @Nullable
-    public Object getProperty(@Nonnull T target, @Nonnull String property)
+    public Object getProperty(@NotNull T target, @NotNull String property)
     {
         Method method = this.getMethod(property);
         try
@@ -104,7 +105,7 @@ public class PropertyExtractor<T>
     /**
      * @return Returns a set of all known property names.
      */
-    @Nonnull
+    @NotNull
     public Set<String> getProperties()
     {
         return this.properties.keySet();
