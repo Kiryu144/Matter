@@ -11,7 +11,7 @@ public class DebugInventory extends SmartInventory
 
     public DebugInventory(@NotNull Player viewer)
     {
-        super(viewer, 3);
+        super(viewer, 3, "Debug Inventory");
     }
 
     @Override

@@ -12,16 +12,16 @@ public class SmartInventory
     private final Player viewer;
     private final Inventory inventory;
 
-    public SmartInventory(@NotNull Player viewer, @NotNull InventoryType inventoryType)
+    public SmartInventory(@NotNull Player viewer, @NotNull InventoryType inventoryType, @NotNull String title)
     {
         this.viewer = viewer;
-        this.inventory = Bukkit.createInventory(null, inventoryType);
+        this.inventory = Bukkit.createInventory(null, inventoryType, title);
     }
 
-    public SmartInventory(@NotNull Player viewer, int rows)
+    public SmartInventory(@NotNull Player viewer, int rows, @NotNull String title)
     {
         this.viewer = viewer;
-        this.inventory = Bukkit.createInventory(null, rows*9);
+        this.inventory = Bukkit.createInventory(null, rows*9, title);
     }
 
     public void onOpen()
