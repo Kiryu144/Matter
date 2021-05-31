@@ -1,6 +1,6 @@
 package at.dklostermann.spigot.matter.custom.item;
 
-import at.dklostermann.spigot.matter.registry.CommonRegistry;
+import at.dklostermann.spigot.matter.registry.Registry;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -9,8 +9,9 @@ import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nullable;
 
-public class CustomItemRegistry extends CommonRegistry<CustomItem>
+public class CustomItemRegistry extends Registry<CustomItem>
 {
+
     public boolean isCustomItem(@Nullable ItemStack itemStack)
     {
         if (itemStack == null)

@@ -1,7 +1,11 @@
 package at.dklostermann.spigot.matter.custom.item;
 
 import at.dklostermann.spigot.matter.Matter;
-import at.dklostermann.spigot.matter.custom.CustomGameObject;
+import at.dklostermann.spigot.matter.registry.IRegistry;
+import at.dklostermann.spigot.matter.registry.IRegistryValue;
+import at.dklostermann.spigot.matter.registry.RegistryValue;
+import at.dklostermann.spigot.matter.custom.item.interaction.CustomItemBlockInteraction;
+import at.dklostermann.spigot.matter.custom.item.interaction.CustomItemInteraction;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,7 +44,7 @@ import java.util.List;
  *                 we fetch the corresponding CustomItem through the ITEM_NAME_KEY and fix the stored registryID and
  *                 registryIndex in the item, so the next lookup can be a lot faster.
  */
-public class CustomItem extends CustomGameObject
+public class CustomItem extends RegistryValue
 {
     /**
      * This is the namespaced key, which stores the registry name in the itemstack meta.
@@ -71,20 +76,9 @@ public class CustomItem extends CustomGameObject
      */
     protected List<String> lore = new ArrayList<>();
 
-    public CustomItem(@Nonnull ConfigurationSection config, @Nonnull String registryName, int registryIndex, short registryUUID)
+    public CustomItem(@NotNull IRegistry<? extends IRegistryValue> registry, @NotNull String registryName, int registryIndex)
     {
-        super(registryName, registryIndex, registryUUID);
-
-        try
-        {
-            this.customModelData = config.getInt("custom_model_data", -1);
-            this.material = Material.valueOf(config.getString("material", "paper").toUpperCase());
-            this.lore.addAll(config.getStringList("lore"));
-        }
-        catch (Exception exception)
-        {
-            throw new CustomItemParseException(exception);
-        }
+        super(registry, registryName, registryIndex);
     }
 
     public CustomItem setMaterial(@Nonnull Material material)

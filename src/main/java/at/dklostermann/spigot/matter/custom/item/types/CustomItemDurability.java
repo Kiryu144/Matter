@@ -2,10 +2,10 @@ package at.dklostermann.spigot.matter.custom.item.types;
 
 import at.dklostermann.spigot.matter.Matter;
 import at.dklostermann.spigot.matter.custom.item.CustomItem;
-import at.dklostermann.spigot.matter.custom.item.CustomItemParseException;
+import at.dklostermann.spigot.matter.registry.IRegistry;
+import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import org.apache.commons.lang.Validate;
 import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -23,18 +23,9 @@ public class CustomItemDurability extends CustomItem
 
     private int durability = 64;
 
-    public CustomItemDurability(@NotNull ConfigurationSection config, @NotNull String registryName, int registryIndex, short registryUUID)
+    public CustomItemDurability(@NotNull IRegistry<? extends IRegistryValue> registry, @NotNull String registryName, int registryIndex)
     {
-        super(config, registryName, registryIndex, registryUUID);
-
-        try
-        {
-            this.durability = Math.max(1, config.getInt("durability"));
-        }
-        catch (Exception exception)
-        {
-            throw new CustomItemParseException(exception);
-        }
+        super(registry, registryName, registryIndex);
     }
 
     public int getDurability()
@@ -42,10 +33,9 @@ public class CustomItemDurability extends CustomItem
         return this.durability;
     }
 
-    public CustomItemDurability setDurability(int durability)
+    public void setDurability(int durability)
     {
         this.durability = durability;
-        return this;
     }
 
     protected void updateItemStackDamageDisplay(@Nonnull ItemMeta itemMeta, int damage, int vanillaDurability)

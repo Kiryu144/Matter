@@ -5,14 +5,14 @@ import at.dklostermann.spigot.matter.blockdata.MultipleFacingBlockDataIndexer;
 import at.dklostermann.spigot.matter.blockdata.NoteBlockDataIndexer;
 import at.dklostermann.spigot.matter.blockdata.TripwireBlockDataIndexer;
 import at.dklostermann.spigot.matter.config.JsonConfiguration;
-import at.dklostermann.spigot.matter.custom.CustomGameObject;
-import at.dklostermann.spigot.matter.custom.CustomGameObjects;
-import at.dklostermann.spigot.matter.custom.block.*;
-import at.dklostermann.spigot.matter.custom.item.*;
+import at.dklostermann.spigot.matter.custom.block.CustomBlockCommands;
+import at.dklostermann.spigot.matter.custom.block.CustomBlockListener;
+import at.dklostermann.spigot.matter.custom.block.CustomBlockRegistry;
+import at.dklostermann.spigot.matter.custom.item.CustomItemCommands;
+import at.dklostermann.spigot.matter.custom.item.CustomItemListener;
+import at.dklostermann.spigot.matter.custom.item.CustomItemRegistry;
 import at.dklostermann.spigot.matter.inventory.SmartInventoryManager;
 import co.aikar.commands.PaperCommandManager;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,26 +20,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 public class Matter extends JavaPlugin
 {
     private static Matter instance;
-    private final MatterLogger matterLogger = new MatterLogger(this);
-    private final MaterialBlockDataIndexerRegistry blockDataIndexerRegistry = new MaterialBlockDataIndexerRegistry();
 
-    private CustomGameObjects<CustomItem> customItems;
-    private CustomGameObjects<CustomBlock> customBlocks;
-
+    private MatterLogger matterLogger;
+    private PaperCommandManager commandManager;
+    private MaterialBlockDataIndexerRegistry blockDataIndexerRegistry;
     private SmartInventoryManager smartInventoryManager;
 
-    // Library
-    private PaperCommandManager commandManager = null;
+    private CustomItemRegistry customItemRegistry;
+    private CustomItemCommands customItemCommands;
+    private CustomItemListener customItemListener;
+
+    private CustomBlockRegistry customBlockRegistry;
+    private CustomBlockCommands customBlockCommands;
+    private CustomBlockListener customBlockListener;
 
     @Override
     public void onLoad()
@@ -50,24 +49,24 @@ public class Matter extends JavaPlugin
     @Override
     public void onEnable()
     {
+        // Constructors
+        this.matterLogger = new MatterLogger(this);
         this.commandManager = new PaperCommandManager(this);
-        this.commandManager.registerCommand(new MatterCommands());
+        this.blockDataIndexerRegistry = new MaterialBlockDataIndexerRegistry();
+        this.smartInventoryManager = new SmartInventoryManager(this);
 
-        final CustomItemRegistry customItemRegistry = new CustomItemRegistry();
-        this.customItems = new CustomGameObjects<>(customItemRegistry, new CustomItemListener(this, customItemRegistry), new CustomItemCommands(customItemRegistry), new CustomItemParser(customItemRegistry));
-        this.commandManager.registerCommand(this.customItems.getCommands());
+        this.customItemRegistry = new CustomItemRegistry();
+        this.customItemCommands = new CustomItemCommands(this.customItemRegistry);
+        this.customItemListener = new CustomItemListener(this, this.customItemRegistry);
 
-        final CustomBlockRegistry customBlockRegistry = new CustomBlockRegistry();
-        this.customBlocks = new CustomGameObjects<>(customBlockRegistry, new CustomBlockListener(this, customBlockRegistry), new CustomBlockCommands(customBlockRegistry), new CustomBlockParser(customBlockRegistry, customItemRegistry));
-        this.commandManager.registerCommand(this.customBlocks.getCommands());
+        this.customBlockRegistry = new CustomBlockRegistry(this.blockDataIndexerRegistry);
+        this.customBlockCommands = new CustomBlockCommands(this.customBlockRegistry);
+        this.customBlockListener = new CustomBlockListener(this, this.customBlockRegistry, this.customItemRegistry);
 
+        // Data
         this.blockDataIndexerRegistry.register(new MultipleFacingBlockDataIndexer());
         this.blockDataIndexerRegistry.register(new TripwireBlockDataIndexer());
         this.blockDataIndexerRegistry.register(new NoteBlockDataIndexer());
-
-        this.smartInventoryManager = new SmartInventoryManager(this);
-
-        this.reload(this.getServer().getConsoleSender());
     }
 
     @Override
@@ -100,63 +99,5 @@ public class Matter extends JavaPlugin
     public static Matter getInstance()
     {
         return instance;
-    }
-
-    public <T extends CustomGameObject> void reloadGameObject(@Nonnull CustomGameObjects<T> customGameObjects, @Nullable CommandSender commandSender)
-    {
-        if (customGameObjects.getParser() != null)
-        {
-            final Path path = Paths.get(this.getDataFolder().getAbsolutePath(), customGameObjects.getParser().getConfigName() + ".json");
-            final File file = path.toFile();
-            file.getParentFile().mkdirs();
-
-            JsonConfiguration jsonConfiguration = new JsonConfiguration();
-            try
-            {
-                jsonConfiguration.load(file);
-                customGameObjects.getParser().parseAll(jsonConfiguration);
-            } catch (IOException | InvalidConfigurationException e)
-            {
-                e.printStackTrace();
-                this.getServer().shutdown();
-            }
-        }
-
-        if (customGameObjects.getCommands() != null)
-        {
-            customGameObjects.getCommands().setRegistry(customGameObjects.getRegistry());
-        }
-    }
-
-    public void reload(@Nullable CommandSender commandSender)
-    {
-        this.reloadGameObject(this.customItems, commandSender);
-        this.reloadGameObject(this.customBlocks, commandSender);
-
-        Bukkit.getOnlinePlayers().forEach(player -> this.getCustomItemRegistry().fixInventory(player.getInventory()));
-    }
-
-    @Nonnull
-    public MaterialBlockDataIndexerRegistry getBlockDataIndexerRegistry()
-    {
-        return this.blockDataIndexerRegistry;
-    }
-
-    @Nonnull
-    public CustomItemRegistry getCustomItemRegistry()
-    {
-        return (CustomItemRegistry) this.customItems.getRegistry();
-    }
-
-    @Nonnull
-    public CustomBlockRegistry getCustomBlockRegistry()
-    {
-        return (CustomBlockRegistry) this.customBlocks.getRegistry();
-    }
-
-    @Nonnull
-    public SmartInventoryManager getSmartInventoryManager()
-    {
-        return this.smartInventoryManager;
     }
 }

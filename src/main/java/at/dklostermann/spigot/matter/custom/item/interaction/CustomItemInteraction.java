@@ -1,5 +1,6 @@
-package at.dklostermann.spigot.matter.custom.item;
+package at.dklostermann.spigot.matter.custom.item.interaction;
 
+import at.dklostermann.spigot.matter.custom.item.CustomItem;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;

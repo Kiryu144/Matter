@@ -2,9 +2,10 @@ package at.dklostermann.spigot.matter.custom.item.types;
 
 import at.dklostermann.spigot.matter.custom.block.CustomBlock;
 import at.dklostermann.spigot.matter.custom.item.CustomItem;
-import at.dklostermann.spigot.matter.custom.item.CustomItemBlockInteraction;
+import at.dklostermann.spigot.matter.custom.item.interaction.CustomItemBlockInteraction;
+import at.dklostermann.spigot.matter.registry.IRegistry;
+import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -13,19 +14,24 @@ public class CustomItemBlock extends CustomItem
 {
     private CustomBlock customBlock;
 
-    public CustomItemBlock(@NotNull ConfigurationSection config, @NotNull String registryName, int registryIndex, short registryUUID)
+    public CustomItemBlock(@NotNull IRegistry<? extends IRegistryValue> registry, @NotNull String registryName, int registryIndex)
     {
-        super(config, registryName, registryIndex, registryUUID);
+        super(registry, registryName, registryIndex);
     }
 
-    public void setCustomBlock(@Nonnull CustomBlock customBLock)
+    public void setCustomBlock(@Nonnull CustomBlock customBlock)
     {
-        this.customBlock = customBLock;
+        this.customBlock = customBlock;
     }
 
     @Override
     public void onBlockChange(@Nonnull CustomItemBlockInteraction interaction)
     {
+        if (this.customBlock == null)
+        {
+            return;
+        }
+
         if (interaction.getInteractionType().equals(CustomItemBlockInteraction.InteractionType.PLACE))
         {
             interaction.getBlock().setType(Material.AIR);

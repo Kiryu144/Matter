@@ -1,7 +1,7 @@
 package at.dklostermann.spigot.matter;
 
 import at.dklostermann.spigot.matter.blockdata.IBlockDataIndexer;
-import at.dklostermann.spigot.matter.inventory.DebugInventory;
+import at.dklostermann.spigot.matter.blockdata.MaterialBlockDataIndexerRegistry;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -14,11 +14,11 @@ import org.bukkit.entity.Player;
 @CommandAlias("matter")
 public class MatterCommands extends BaseCommand
 {
-    @Subcommand("reload")
-    @CommandPermission("matter.reload")
-    public void reload(CommandSender sender)
+    private final MaterialBlockDataIndexerRegistry blockDataIndexerRegistry;
+
+    public MatterCommands(MaterialBlockDataIndexerRegistry blockDataIndexerRegistry)
     {
-        Matter.getInstance().reload(sender);
+        this.blockDataIndexerRegistry = blockDataIndexerRegistry;
     }
 
     @Subcommand("material_index")
@@ -39,7 +39,7 @@ public class MatterCommands extends BaseCommand
             return;
         }
 
-        IBlockDataIndexer blockDataIndexer = Matter.getInstance().getBlockDataIndexerRegistry().getIndexer(material);
+        IBlockDataIndexer blockDataIndexer = this.blockDataIndexerRegistry.getIndexer(material);
         if (blockDataIndexer == null)
         {
             sender.sendMessage(String.format("No indexer registered for material material type '%s'", name));
@@ -57,7 +57,7 @@ public class MatterCommands extends BaseCommand
     @CommandPermission("matter.gui")
     public void test(Player sender, int title)
     {
-        Matter.getInstance().getSmartInventoryManager().open(new DebugInventory(sender));
+
         /*
         InputNumberGui inputNumberGui = new InputNumberGui(iResult -> {
             InputNumberGui.Result result = (InputNumberGui.Result) iResult;

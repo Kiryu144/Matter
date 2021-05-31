@@ -5,16 +5,18 @@ import org.apache.commons.lang.Validate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class CommonRegistry<V extends IRegistryValue> implements IRegistry<V>
+public class Registry<V extends IRegistryValue> implements IRegistry<V>
 {
     private short uuid = (short) (Math.random() * Short.MAX_VALUE);
     private final Map<String, V> names = new HashMap<>();
     private final List<V> valueList = new ArrayList<>();
     private final List<String> nameList = new ArrayList<>();
+    private final List<Consumer<V>> onRegisterCallbacks = new ArrayList<>();
 
-    public CommonRegistry()
+    public Registry()
     {
         this.clear();
     }
@@ -39,12 +41,19 @@ public class CommonRegistry<V extends IRegistryValue> implements IRegistry<V>
 
         this.postRegister(value);
 
+        this.onRegisterCallbacks.forEach(vConsumer -> vConsumer.accept(value));
+
         return value;
     }
 
     protected void postRegister(@Nonnull V value)
     {
 
+    }
+
+    public void onRegister(@Nonnull Consumer<V> callback)
+    {
+        this.onRegisterCallbacks.add(callback);
     }
 
     @Override

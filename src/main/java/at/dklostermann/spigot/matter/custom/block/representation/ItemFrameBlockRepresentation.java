@@ -25,24 +25,6 @@ public class ItemFrameBlockRepresentation implements IBlockRepresentation
         this.itemStack = itemStack;
     }
 
-    @Nonnull
-    public static ItemFrameBlockRepresentation FromConfig(@Nonnull ConfigurationSection configurationSection)
-    {
-        ConfigurationSection displaySection = configurationSection.getConfigurationSection("display");
-        Validate.notNull(displaySection);
-
-        Material material = Material.valueOf(displaySection.getString("material").toUpperCase());
-        int customModelData = displaySection.getInt("custom_model_data");
-
-        ItemStack itemStack = new ItemStack(material);
-        ItemMeta meta = itemStack.getItemMeta();
-        meta.setCustomModelData(customModelData);
-        itemStack.setItemMeta(meta);
-
-        return new ItemFrameBlockRepresentation(itemStack);
-    }
-
-    @Override
     public void place(@Nonnull CustomBlock customBlock, @Nonnull Location location, @javax.annotation.Nullable BlockFace blockFace, @Nullable Player player)
     {
         location.getWorld().spawnEntity(location, EntityType.ITEM_FRAME, CreatureSpawnEvent.SpawnReason.DEFAULT, entity -> {

@@ -1,14 +1,15 @@
 package at.dklostermann.spigot.matter.custom.item.types;
 
-import at.dklostermann.spigot.matter.custom.item.CustomItemBlockInteraction;
-import org.bukkit.configuration.ConfigurationSection;
+import at.dklostermann.spigot.matter.custom.item.interaction.CustomItemBlockInteraction;
+import at.dklostermann.spigot.matter.registry.IRegistry;
+import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomItemTool extends CustomItemDurability
 {
-    public CustomItemTool(@NotNull ConfigurationSection config, @NotNull String registryName, int registryIndex, short registryUUID)
+    public CustomItemTool(@NotNull IRegistry<? extends IRegistryValue> registry, @NotNull String registryName, int registryIndex)
     {
-        super(config, registryName, registryIndex, registryUUID);
+        super(registry, registryName, registryIndex);
     }
 
     @Override

@@ -1,21 +1,20 @@
-package at.dklostermann.spigot.matter.custom;
+package at.dklostermann.spigot.matter.registry;
 
-import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
-public class CustomGameObject implements IRegistryValue
+public class RegistryValue implements IRegistryValue
 {
     private final String registryName;
     private final int registryIndex;
     private final short registryUUID;
 
-    public CustomGameObject(@Nonnull String registryName, int registryIndex, short registryUUID)
+    public RegistryValue(@Nonnull IRegistry<? extends IRegistryValue> registry, @Nonnull String registryName, int registryIndex)
     {
         this.registryName = registryName;
         this.registryIndex = registryIndex;
-        this.registryUUID = registryUUID;
+        this.registryUUID = registry.getUUID();
     }
 
     @NotNull

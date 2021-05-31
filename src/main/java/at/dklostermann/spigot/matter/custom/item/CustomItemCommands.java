@@ -1,7 +1,5 @@
 package at.dklostermann.spigot.matter.custom.item;
 
-import at.dklostermann.spigot.matter.custom.CustomGameObjectCommand;
-import at.dklostermann.spigot.matter.custom.block.CustomBlock;
 import at.dklostermann.spigot.matter.registry.IRegistry;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
@@ -15,11 +13,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @CommandAlias("matter")
-public class CustomItemCommands extends CustomGameObjectCommand<CustomItem>
+public class CustomItemCommands extends BaseCommand
 {
-    public CustomItemCommands(IRegistry<CustomItem> registry)
+    private final CustomItemRegistry customItemRegistry;
+
+    public CustomItemCommands(CustomItemRegistry customItemRegistry)
     {
-        super(registry);
+        this.customItemRegistry = customItemRegistry;
     }
 
     @Subcommand("give")
@@ -39,7 +39,7 @@ public class CustomItemCommands extends CustomGameObjectCommand<CustomItem>
             return;
         }
 
-        CustomItem customItem = this.getRegistry().get(customItemName);
+        CustomItem customItem = this.customItemRegistry.get(customItemName);
         if (customItem == null)
         {
             sender.sendMessage(ChatColor.RED + "Unknown custom item " + customItemName);
@@ -87,7 +87,7 @@ public class CustomItemCommands extends CustomGameObjectCommand<CustomItem>
         }
 
         Location location = receiverPlayer.getLocation();
-        for (CustomItem customItem : this.getRegistry().values())
+        for (CustomItem customItem : this.customItemRegistry.values())
         {
             location.getWorld().dropItem(location, customItem.createItemStack());
         }

@@ -1,12 +1,11 @@
 package at.dklostermann.spigot.matter.custom.block;
 
-import at.dklostermann.spigot.matter.Matter;
+import at.dklostermann.spigot.matter.blockdata.IBlockDataIndexer;
+import at.dklostermann.spigot.matter.blockdata.MaterialBlockDataIndexerRegistry;
 import at.dklostermann.spigot.matter.custom.block.representation.IBlockRepresentation;
 import at.dklostermann.spigot.matter.custom.block.representation.RotatableBlockRepresentation;
 import at.dklostermann.spigot.matter.custom.block.representation.SolidBlockRepresentation;
-import at.dklostermann.spigot.matter.registry.CommonRegistry;
-import at.dklostermann.spigot.matter.blockdata.IBlockDataIndexer;
-import at.dklostermann.spigot.matter.registry.IRegistryValue;
+import at.dklostermann.spigot.matter.registry.Registry;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -19,15 +18,20 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
-import java.util.function.Function;
 
 /**
  * This registry extension provides an easy way to find the CustomBlock for a Block.
  */
-public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
+public class CustomBlockRegistry extends Registry<CustomBlock>
 {
     private final CustomBlock[][] blockReferences = new CustomBlock[Material.values().length][];
+    private final MaterialBlockDataIndexerRegistry materialBlockDataIndexerRegistry;
     private Entity lastCorrelatingEntity = null; // TODO: This is very hacky, please find a better way soon.
+
+    public CustomBlockRegistry(@Nonnull MaterialBlockDataIndexerRegistry materialBlockDataIndexerRegistry)
+    {
+        this.materialBlockDataIndexerRegistry = materialBlockDataIndexerRegistry;
+    }
 
     @Override
     protected void postRegister(@NotNull CustomBlock value)
@@ -106,7 +110,7 @@ public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
             }
         }
 
-        IBlockDataIndexer indexer = Matter.getInstance().getBlockDataIndexerRegistry().getIndexer(block.getType());
+        IBlockDataIndexer indexer = this.materialBlockDataIndexerRegistry.getIndexer(block.getType());
         if (indexer == null)
         {
             return null;
@@ -117,7 +121,7 @@ public class CustomBlockRegistry extends CommonRegistry<CustomBlock>
     @Nullable
     public CustomBlock getCustomBlock(@Nonnull BlockData blockData)
     {
-        IBlockDataIndexer indexer = Matter.getInstance().getBlockDataIndexerRegistry().getIndexer(blockData.getMaterial());
+        IBlockDataIndexer indexer = this.materialBlockDataIndexerRegistry.getIndexer(blockData.getMaterial());
         if (indexer == null)
         {
             return null;

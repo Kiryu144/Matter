@@ -33,24 +33,6 @@ public class RotatableBlockRepresentation implements IBlockRepresentation
         Validate.isTrue(this.blockRepresentations.size() > 0);
     }
 
-    public static RotatableBlockRepresentation FromConfig(@Nonnull ConfigurationSection configurationSection)
-    {
-        List<IBlockRepresentation> blockRepresentations = new ArrayList<>();
-        ConfigurationSection blocks = configurationSection.getConfigurationSection("blocks");
-
-        for (int i = 0; i < blocks.getKeys(false).size(); ++i)
-        {
-            blockRepresentations.add(null);
-        }
-
-        for (String key : blocks.getKeys(false))
-        {
-            int index = Integer.parseInt(key);
-            blockRepresentations.set(index, IBlockRepresentation.FromConfig(blocks.getConfigurationSection(key)));
-        }
-        return new RotatableBlockRepresentation(blockRepresentations);
-    }
-
     public List<IBlockRepresentation> getBlockRepresentations()
     {
         return this.blockRepresentations;

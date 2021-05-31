@@ -1,11 +1,8 @@
 package at.dklostermann.spigot.matter.custom.block;
 
-import at.dklostermann.spigot.matter.Matter;
-import at.dklostermann.spigot.matter.custom.CustomGameObjectListener;
 import at.dklostermann.spigot.matter.custom.block.representation.ItemFrameBlockRepresentation;
 import at.dklostermann.spigot.matter.custom.item.CustomItem;
 import at.dklostermann.spigot.matter.custom.item.CustomItemRegistry;
-import at.dklostermann.spigot.matter.registry.IRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -27,11 +24,15 @@ import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nonnull;
 
-public class CustomBlockListener extends CustomGameObjectListener<CustomBlock>
+public class CustomBlockListener implements Listener
 {
-    public CustomBlockListener(@Nonnull Plugin plugin, @Nonnull IRegistry<CustomBlock> registry)
+    private final CustomBlockRegistry customBlockRegistry;
+    private final CustomItemRegistry customItemRegistry;
+
+    public CustomBlockListener(@Nonnull Plugin plugin, @Nonnull CustomBlockRegistry customBlockRegistry, @Nonnull CustomItemRegistry customItemRegistry)
     {
-        super(registry);
+        this.customBlockRegistry = customBlockRegistry;
+        this.customItemRegistry = customItemRegistry;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
     
@@ -43,7 +44,7 @@ public class CustomBlockListener extends CustomGameObjectListener<CustomBlock>
             return;
         }
 
-        CustomBlock customBlock = ((CustomBlockRegistry) this.getRegistry()).getCustomBlock(event.getBlock());
+        CustomBlock customBlock = this.customBlockRegistry.getCustomBlock(event.getBlock());
         if (customBlock == null)
         {
             return;
@@ -51,7 +52,7 @@ public class CustomBlockListener extends CustomGameObjectListener<CustomBlock>
 
         if (customBlock.getBlockRepresentation() instanceof ItemFrameBlockRepresentation)
         {
-            ((CustomBlockRegistry) this.getRegistry()).getLastCorrelatingEntity().remove();
+            this.customBlockRegistry.getLastCorrelatingEntity().remove();
         }
 
         if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE))
@@ -74,13 +75,13 @@ public class CustomBlockListener extends CustomGameObjectListener<CustomBlock>
             return;
         }
 
-        CustomBlock customBlock = ((CustomBlockRegistry) this.getRegistry()).getCustomBlock(event.getClickedBlock());
+        CustomBlock customBlock = this.customBlockRegistry.getCustomBlock(event.getClickedBlock());
         if (customBlock == null || !(customBlock.getBlockRepresentation() instanceof ItemFrameBlockRepresentation))
         {
             return;
         }
 
-        ItemFrame itemFrame = (ItemFrame) ((CustomBlockRegistry) this.getRegistry()).getLastCorrelatingEntity();
+        ItemFrame itemFrame = (ItemFrame) this.customBlockRegistry.getLastCorrelatingEntity();
         itemFrame.setRotation(itemFrame.getRotation().rotateClockwise());
     }
 
@@ -92,7 +93,7 @@ public class CustomBlockListener extends CustomGameObjectListener<CustomBlock>
             return;
         }
 
-        CustomBlock customBlock = ((CustomBlockRegistry) this.getRegistry()).getCustomBlock(event.getBlock());
+        CustomBlock customBlock = this.customBlockRegistry.getCustomBlock(event.getBlock());
         if (customBlock != null)
         {
             event.setCancelled(true);
@@ -109,7 +110,7 @@ public class CustomBlockListener extends CustomGameObjectListener<CustomBlock>
 
         HumanEntity player = event.getWhoClicked();
         Block block = player.getTargetBlock(5);
-        CustomBlock customBlock = ((CustomBlockRegistry) this.getRegistry()).getCustomBlock(block);
+        CustomBlock customBlock = this.customBlockRegistry.getCustomBlock(block);
         if (customBlock == null)
         {
             return;
@@ -117,6 +118,10 @@ public class CustomBlockListener extends CustomGameObjectListener<CustomBlock>
 
         event.setCancelled(true);
         CustomItem customBlockItem = customBlock.getCustomItem();
+        if (customBlockItem == null)
+        {
+            return;
+        }
 
         PlayerInventory inventory = player.getInventory();
         int slotToUse = -1;
@@ -132,8 +137,7 @@ public class CustomBlockListener extends CustomGameObjectListener<CustomBlock>
             }
             else
             {
-                // TODO: Remove matter reference
-                CustomItem customItem = Matter.getInstance().getCustomItemRegistry().get(itemStack);
+                CustomItem customItem = this.customItemRegistry.get(itemStack);
                 if (customItem == customBlockItem)
                 {
                     inventory.setHeldItemSlot(i);
