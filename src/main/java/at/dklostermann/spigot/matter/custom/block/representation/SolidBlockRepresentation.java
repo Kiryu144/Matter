@@ -12,6 +12,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.List;
+
 public class SolidBlockRepresentation implements IBlockRepresentation
 {
     private final Material material;
@@ -35,6 +38,12 @@ public class SolidBlockRepresentation implements IBlockRepresentation
     public void place(@NotNull CustomBlock customBlock, @NotNull Location location, @javax.annotation.Nullable BlockFace blockFace, @Nullable Player player)
     {
         location.getBlock().setBlockData(this.blockData, false);
+    }
+
+    @Override
+    public @NotNull List<BlockData> getBlockDatas()
+    {
+        return Collections.singletonList(this.blockData);
     }
 
     public Material getMaterial()

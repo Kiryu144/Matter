@@ -25,10 +25,10 @@ public class Registry<V extends IRegistryValue> implements IRegistry<V>
     }
 
     @Override
-    public V register(Function<Integer, V> function)
+    public <T extends V> T register(Function<Integer, T> function)
     {
         final int index = this.valueList.size();
-        final V value = function.apply(index);
+        final T value = function.apply(index);
 
         Validate.notNull(value);
 

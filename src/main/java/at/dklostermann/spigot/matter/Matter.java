@@ -119,4 +119,9 @@ public class Matter extends JavaPlugin
     {
         return this.smartInventoryManager;
     }
+
+    public MaterialBlockDataIndexerRegistry getBlockDataIndexerRegistry()
+    {
+        return this.blockDataIndexerRegistry;
+    }
 }

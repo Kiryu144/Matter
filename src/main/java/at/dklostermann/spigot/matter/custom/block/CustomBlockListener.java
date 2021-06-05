@@ -49,7 +49,7 @@ public class CustomBlockListener implements Listener
             return;
         }
 
-        if (!customBlock.onPlayerBreak(event.getPlayer(), null))
+        if (!customBlock.onPlayerBreak(event.getPlayer(), event.getBlock()))
         {
             event.setCancelled(true);
             return;
@@ -109,6 +109,7 @@ public class CustomBlockListener implements Listener
     @EventHandler
     private void onInventoryCreativeEvent(InventoryCreativeEvent event)
     {
+        /*
         if (event.getCurrentItem() != null && !event.getCurrentItem().getType().isAir() && event.getRawSlot() >= 0 && event.getRawSlot() < 9)
         {
             return;
@@ -123,11 +124,7 @@ public class CustomBlockListener implements Listener
         }
 
         event.setCancelled(true);
-        CustomItem customBlockItem = customBlock.getCustomItem();
-        if (customBlockItem == null)
-        {
-            return;
-        }
+        ItemStack naturalDrop = customBlock.getNaturalDrop();
 
         PlayerInventory inventory = player.getInventory();
         int slotToUse = -1;
@@ -163,6 +160,6 @@ public class CustomBlockListener implements Listener
         }
 
         inventory.setItem(slotToUse, customBlockItem.createItemStack());
-        inventory.setHeldItemSlot(slotToUse);
+        inventory.setHeldItemSlot(slotToUse);*/
     }
 }

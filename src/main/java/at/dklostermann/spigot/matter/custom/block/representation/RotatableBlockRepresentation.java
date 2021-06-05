@@ -4,6 +4,7 @@ import at.dklostermann.spigot.matter.custom.block.CustomBlock;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,11 +26,14 @@ public class RotatableBlockRepresentation implements IBlockRepresentation
                     { 0, 1, 2, 3, 4, 5 }, // 6
             };
     private final List<IBlockRepresentation> blockRepresentations = new ArrayList<>();
+    private final List<BlockData> blockDataList = new ArrayList<>();
 
     public RotatableBlockRepresentation(@NotNull List<IBlockRepresentation> blockRepresentations)
     {
         this.blockRepresentations.addAll(blockRepresentations);
         Validate.isTrue(this.blockRepresentations.size() > 0);
+
+        this.blockRepresentations.forEach(iBlockRepresentation -> this.blockDataList.addAll(iBlockRepresentation.getBlockDatas()));
     }
 
     public List<IBlockRepresentation> getBlockRepresentations()
@@ -51,5 +55,11 @@ public class RotatableBlockRepresentation implements IBlockRepresentation
 
         int representationToUse = ROTATION_LOOKUP[this.blockRepresentations.size()][blockFace.ordinal()];
         this.blockRepresentations.get(representationToUse < this.blockRepresentations.size() ? representationToUse : 0).place(customBlock, location, blockFace, player);
+    }
+
+    @Override
+    public @NotNull List<BlockData> getBlockDatas()
+    {
+        return this.blockDataList;
     }
 }

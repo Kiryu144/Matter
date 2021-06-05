@@ -4,6 +4,7 @@ import at.dklostermann.spigot.matter.custom.block.CustomBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
@@ -11,6 +12,9 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemFrameBlockRepresentation implements IBlockRepresentation
 {
@@ -34,5 +38,11 @@ public class ItemFrameBlockRepresentation implements IBlockRepresentation
             itemFrame.setCustomNameVisible(false);
         });
         location.getBlock().setType(Material.BARRIER);
+    }
+
+    @Override
+    public @NotNull List<BlockData> getBlockDatas()
+    {
+        return new ArrayList<>();
     }
 }

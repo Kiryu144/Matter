@@ -7,6 +7,7 @@ import at.dklostermann.spigot.matter.registry.IRegistry;
 import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import at.dklostermann.spigot.matter.registry.RegistryValue;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +21,7 @@ import java.util.List;
 public class CustomBlock extends RegistryValue
 {
     private final IBlockRepresentation blockRepresentation;
-    private CustomItemBlock customItem;
+    private ItemStack naturalDrop = null;
 
     public CustomBlock(@NotNull IRegistry<? extends IRegistryValue> registry, @NotNull String registryName, int registryIndex, @NotNull IBlockRepresentation blockRepresentation)
     {
@@ -28,27 +29,32 @@ public class CustomBlock extends RegistryValue
         this.blockRepresentation = blockRepresentation;
     }
 
-    public void setCustomItem(@NotNull CustomItemBlock customItem)
-    {
-        this.customItem = customItem;
-    }
-
     public void place(@NotNull Location location, @Nullable BlockFace blockFace, @Nullable Player player)
     {
         this.blockRepresentation.place(this, location, blockFace, player);
     }
 
-    public boolean onPlayerBreak(@NotNull Player player, @Nullable BlockFace blockFace)
+    public boolean onPlayerBreak(@NotNull Player player, @NotNull Block block)
     {
         return true;
+    }
+
+    public ItemStack getNaturalDrop()
+    {
+        return this.naturalDrop;
+    }
+
+    public void setNaturalDrop(@Nullable ItemStack naturalDrop)
+    {
+        this.naturalDrop = naturalDrop;
     }
 
     @NotNull
     public List<ItemStack> getDrops()
     {
-        if (this.customItem != null)
+        if (this.naturalDrop != null)
         {
-            return Collections.singletonList(this.customItem.createItemStack());
+            return Collections.singletonList(this.naturalDrop);
         }
         else
         {
@@ -60,11 +66,5 @@ public class CustomBlock extends RegistryValue
     public IBlockRepresentation getBlockRepresentation()
     {
         return this.blockRepresentation;
-    }
-
-    @Nullable
-    public CustomItem getCustomItem()
-    {
-        return this.customItem;
     }
 }

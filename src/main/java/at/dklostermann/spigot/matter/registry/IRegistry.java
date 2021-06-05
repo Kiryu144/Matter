@@ -19,7 +19,7 @@ public interface IRegistry<V extends IRegistryValue>
      *
      * @param function Function that gives the new registry index
      */
-    V register(Function<Integer, V> function);
+    <T extends V> T register(Function<Integer, T> function);
 
     /**
      * Fetched the value given the registry name. This returns the instance, not a copy.
