@@ -72,6 +72,17 @@ public class CustomBlockListener implements Listener
     @EventHandler
     private void onBlockInteractEvent(PlayerInteractEvent event)
     {
+        CustomBlock customBlock = this.customBlockRegistry.getCustomBlock(event.getClickedBlock());
+        if (customBlock == null)
+        {
+            return;
+        }
+
+        if (!customBlock.onInteract(event))
+        {
+            event.setCancelled(true);
+        }
+
         if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ||
                 !event.getPlayer().getGameMode().equals(GameMode.CREATIVE) ||
                 !event.getClickedBlock().getType().equals(Material.BARRIER) ||
@@ -81,8 +92,7 @@ public class CustomBlockListener implements Listener
             return;
         }
 
-        CustomBlock customBlock = this.customBlockRegistry.getCustomBlock(event.getClickedBlock());
-        if (customBlock == null || !(customBlock.getBlockRepresentation() instanceof ItemFrameBlockRepresentation))
+        if (!(customBlock.getBlockRepresentation() instanceof ItemFrameBlockRepresentation))
         {
             return;
         }

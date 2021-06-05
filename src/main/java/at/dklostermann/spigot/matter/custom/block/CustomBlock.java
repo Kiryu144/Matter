@@ -1,8 +1,6 @@
 package at.dklostermann.spigot.matter.custom.block;
 
 import at.dklostermann.spigot.matter.custom.block.representation.IBlockRepresentation;
-import at.dklostermann.spigot.matter.custom.item.CustomItem;
-import at.dklostermann.spigot.matter.custom.item.types.CustomItemBlock;
 import at.dklostermann.spigot.matter.registry.IRegistry;
 import at.dklostermann.spigot.matter.registry.IRegistryValue;
 import at.dklostermann.spigot.matter.registry.RegistryValue;
@@ -10,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,6 +34,12 @@ public class CustomBlock extends RegistryValue
     }
 
     public boolean onPlayerBreak(@NotNull Player player, @NotNull Block block)
+    {
+        return true;
+    }
+
+    // TODO: Replace PlayerInteractEvent with custom class
+    public boolean onInteract(@NotNull PlayerInteractEvent event)
     {
         return true;
     }
